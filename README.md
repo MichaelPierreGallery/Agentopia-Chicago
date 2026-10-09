@@ -1,5 +1,7 @@
 # Agentopia Detroit
 
+> **Chicago build:** this fork adds city packs. See [CHICAGO.md](CHICAGO.md) to run Agentopia Chicago, or to make your own city.
+
 ## A Persistent AI Society Built on Agentopia
 
 **Experimental Alpha - v1.8.0-RC1**

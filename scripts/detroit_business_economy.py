@@ -95,6 +95,10 @@ ANCHORS = [
 
 PUBLIC_HINTS = ('city of detroit','public safety','civic','justice center','government','municipal','fire','police')
 NONPROFIT_HINTS = ('community health','learning network','university','academy','research institute','community services')
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+ANCHORS = [tuple(x) for x in _city.get('business.anchors', _city.localize(ANCHORS))]
+PUBLIC_HINTS = PUBLIC_HINTS + ((f'city of {_city.name().lower()}',) if not _city.IS_DEFAULT else ())
 FACTION_ORGS = {'ThAI Guardians','Obsidian Network'}
 
 

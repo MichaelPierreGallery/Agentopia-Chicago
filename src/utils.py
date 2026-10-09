@@ -1936,6 +1936,30 @@ def is_gen_finished(response):
         )
 
 
+# AGENTOPIA_CITY_PACK: localize every outgoing prompt to the active city.
+# Engine modules still contain Detroit wording; for a non-Detroit city pack the
+# pack's ordered name rules rewrite it here, at the single LLM choke point.
+try:
+    from src import city_pack as _city_pack
+except Exception:  # pragma: no cover - city packs are optional
+    _city_pack = None
+
+if _city_pack is not None and not _city_pack.IS_DEFAULT:
+    _generate_with_fc_unlocalized = generate_with_fc
+
+    def _localize_messages(messages):
+        out = []
+        for m in messages or []:
+            if isinstance(m, dict) and isinstance(m.get("content"), str):
+                m = dict(m)
+                m["content"] = _city_pack.localize_text(m["content"])
+            out.append(m)
+        return out
+
+    def generate_with_fc(model: str, messages: list, *args, **kwargs):  # noqa: F811
+        return _generate_with_fc_unlocalized(model, _localize_messages(messages), *args, **kwargs)
+
+
 def _get_response(model: str, messages, max_tokens=None, **kwargs):
     # nth_generation inside generate_with_fc: used for API exception retries
     out = generate_with_fc(

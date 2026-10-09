@@ -75,6 +75,13 @@ MARKETS = {
 }
 
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+INSTITUTIONS = _city.localize(INSTITUTIONS)
+MISSION_TARGETS = _city.localize(MISSION_TARGETS)
+MARKETS = _city.get('finance.markets', _city.localize(MARKETS))
+
+
 def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat()
 

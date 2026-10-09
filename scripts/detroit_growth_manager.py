@@ -14,6 +14,7 @@ WORLD = ROOT / "data" / "detroit_persistent"
 HUM = WORLD / "humanity"
 PERSONA = WORLD / "persona"
 STATE_PATH = HUM / "promotion_state.json"
+import agentopia_city as _city
 VERSION = "1.1.0"
 
 
@@ -109,7 +110,7 @@ def _lineage_text(person: dict[str, Any]) -> str:
     if isinstance(lineage, dict):
         ids = [str(x) for x in lineage.get("founder_ids", []) if x]
         if ids:
-            return " Their recorded lineage connects to Agentopia Detroit founding-citizen IDs: " + ", ".join(ids) + "."
+            return _city.localize_text(" Their recorded lineage connects to Agentopia Detroit founding-citizen IDs: ") + ", ".join(ids) + "."
     return ""
 
 
@@ -123,7 +124,7 @@ def build_profile(person: dict[str, Any], year: int) -> dict[str, Any]:
     name = str(person.get("name") or "Agentopia Citizen")
     birth_year = int(person.get("birth_year", year - int(person.get("age", 30) or 30)))
     age = max(0, year - birth_year)
-    origin = str(person.get("origin") or "Agentopia Detroit")
+    origin = str(person.get("origin") or _city.world_name())
     life_stage = str(person.get("life_stage") or "resident")
 
     traits = _numeric_map(pid, TRAIT_KEYS, 35, 78, "trait")
@@ -157,7 +158,7 @@ def build_profile(person: dict[str, Any], year: int) -> dict[str, Any]:
             "Agentopia does not infer appearance or protected identity from a name, origin, or family record."
         ),
         "brief_introduction": (
-            f"{name} is a {life_stage.replace('_', ' ')} resident of Agentopia Detroit. "
+            f"{name} is a {life_stage.replace('_', ' ')} resident of {_city.world_name()}. "
             f"The explicit lifecycle record lists their prior origin as {origin}. "
             "They have entered the interactive civic simulation after existing in the background population."
         ),
@@ -167,7 +168,7 @@ def build_profile(person: dict[str, Any], year: int) -> dict[str, Any]:
             "work, relationships, finances, health, learning, and community obligations."
         ),
         "core_motivation": (
-            "Build a stable, self-directed life in Agentopia Detroit and make choices that reflect lived experience."
+            _city.localize_text("Build a stable, self-directed life in Agentopia Detroit and make choices that reflect lived experience.")
         ),
         "values": (
             "Personal agency, family and community relationships, practical stability, learning, privacy, and accountability."
@@ -192,9 +193,9 @@ def build_profile(person: dict[str, Any], year: int) -> dict[str, Any]:
         "position": {
             "weekly_income": 0,
             "role": "Civic Resident / Job Seeker",
-            "organization": "Agentopia Detroit Civic Registry",
+            "organization": _city.localize_text("Agentopia Detroit Civic Registry"),
             "type": "unemployed",
-            "description": "Growth-pool entry state; Detroit Career Economy is authoritative for future work.",
+            "description": _city.localize_text("Growth-pool entry state; Detroit Career Economy is authoritative for future work."),
             "weekly_delta_skills": {},
         },
         "init_skills": skills,
@@ -409,7 +410,7 @@ def prepare_for_boot() -> dict[str, Any]:
 
 def status() -> None:
     result = prepare_for_boot()
-    print(f"Agentopia Detroit Growth Manager v{VERSION}")
+    print(_city.localize_text(f"Agentopia Detroit Growth Manager v{VERSION}"))
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 

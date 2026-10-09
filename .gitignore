@@ -46,3 +46,7 @@ detroit-conversion-backup*/
 .DS_Store
 .vscode/
 .idea/
+
+# City packs: generated per-machine
+data/active_city
+data/chicago/

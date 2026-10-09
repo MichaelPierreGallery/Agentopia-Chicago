@@ -37,6 +37,11 @@ ORIGINS = [
     "Tokyo, Japan", "Mumbai, India", "Mexico City, Mexico", "London, United Kingdom",
 ]
 
+# AGENTOPIA_CITY_PACK
+import agentopia_city as _city
+HOME_ORIGIN = _city.get("lifecycle.home_origin", "Detroit, Michigan")
+ORIGINS = _city.get("lifecycle.origins", ORIGINS)
+
 FIRST_NAMES = [
     "Amara","Andre","Amina","Avery","Camila","Daniel","Elena","Eli","Fatima","Gabriel",
     "Hana","Isaiah","Jamal","Jiwoo","Jordan","Leila","Luis","Maya","Mei","Micah",
@@ -235,7 +240,7 @@ def seed_existing_personas(people: dict[str, Any], current_year: int) -> None:
             "agentopia_persona": True,
             "background": (d / "_background.json").exists(),
             "origin_type": rec.get("origin_type", "founding_or_existing_citizen"),
-            "origin": rec.get("origin", "Agentopia Detroit"),
+            "origin": rec.get("origin", _city.world_name()),
             "parents": rec.get("parents", []),
             "children": rec.get("children", []),
             "partners": rec.get("partners", []),
@@ -309,7 +314,7 @@ def seed_migration_households(people: dict[str, Any], current_year: int) -> None
     # Extended family: grandparents -> adult siblings -> grandchildren. This creates
     # grandparents, aunts/uncles, nieces/nephews, and cousins immediately without
     # inventing family ties among the 100 founders.
-    origin = rng.choice([x for x in ORIGINS if x != "Detroit, Michigan"])
+    origin = rng.choice([x for x in ORIGINS if x != HOME_ORIGIN])
     surname = rng.choice(SURNAMES)
     h1 = "HH-" + hashlib.sha256((origin+surname+"A").encode()).hexdigest()[:8].upper()
     gp1 = create_person(people, unique_name(rng, people, surname), 72, current_year, origin=origin, household=h1)
@@ -332,7 +337,7 @@ def seed_migration_households(people: dict[str, Any], current_year: int) -> None
     created += [gp1,gp2,a1,a2,p1,p2,c1,c2,c3,c4]
 
     # Second migration household provides another baby/teen/senior mix.
-    origin2 = rng.choice([x for x in ORIGINS if x not in (origin,"Detroit, Michigan")])
+    origin2 = rng.choice([x for x in ORIGINS if x not in (origin,HOME_ORIGIN)])
     surname2 = rng.choice([s for s in SURNAMES if s != surname])
     h2 = "HH-" + hashlib.sha256((origin2+surname2+"B").encode()).hexdigest()[:8].upper()
     senior = create_person(people, unique_name(rng, people, surname2), 81, current_year, origin=origin2, household=h2)
@@ -439,7 +444,7 @@ def process_year_transition(people: dict[str, Any], current_year: int) -> None:
                     surname=str(p.get("name","Citizen")).split()[-1]
                     name=unique_name(rng,people,surname)
                     inherited=(p.get("belief") or {}).get("affiliation")
-                    child=create_person(people,name,0,year,origin="Agentopia Detroit",household=str(p.get("household_id") or q.get("household_id") or "HH-DETROIT"),parents=[pid,partner],inherited_belief=inherited)
+                    child=create_person(people,name,0,year,origin=_city.world_name(),household=str(p.get("household_id") or q.get("household_id") or "HH-"+_city.CITY_ID.upper()),parents=[pid,partner],inherited_belief=inherited)
                     people[child]["origin_type"]="founder_or_resident_lineage"
                     people[child]["lineage"]=inherited_lineage(p,q)
                     p.setdefault("children",[]).append(child); q.setdefault("children",[]).append(child)
@@ -459,7 +464,7 @@ def process_year_transition(people: dict[str, Any], current_year: int) -> None:
         arrived=[]
         age_pool=[18,19,21,23,25,27,30,33,36,40,45,50,56,63,70]
         for idx in range(arrivals):
-            origin=rng.choice([x for x in ORIGINS if x!="Detroit, Michigan"])
+            origin=rng.choice([x for x in ORIGINS if x!=HOME_ORIGIN])
             age=rng.choice(age_pool)
             surname=rng.choice(SURNAMES)
             name=unique_name(rng,people,surname)
@@ -661,7 +666,7 @@ def apply_runtime_patch() -> None:
 
 def status() -> None:
     s=read_json(HUM/"summary.json",{})
-    print(f"Agentopia Detroit Human Lifecycle v{VERSION}")
+    print(f"{_city.world_name()} Human Lifecycle v{VERSION}")
     print("Population:",s.get("population",0),"households:",s.get("households",0))
     print("Life stages:",s.get("life_stages",{}))
     print("Beliefs:",s.get("beliefs",{}))

@@ -68,6 +68,14 @@ UNIT_TYPES = [
     ('Duplex Unit', 3, 172), ('Family House', 4, 195),
 ]
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+DEFAULT_POLICY = _city.localize(DEFAULT_POLICY)
+DEFAULT_POLICY['jurisdiction'] = _city.get('human_economy.jurisdiction', DEFAULT_POLICY['jurisdiction'])
+DEFAULT_POLICY['taxes'].update(_city.get('human_economy.taxes', {}))
+NEIGHBORHOODS = [tuple(x) for x in _city.get('human_economy.neighborhoods', NEIGHBORHOODS)]
+UNIT_TYPES = [tuple(x) for x in _city.get('human_economy.unit_types', UNIT_TYPES)]
+
 PRICE_CATEGORIES = ['housing','groceries','utilities','transport','healthcare','insurance','communications','discretionary']
 DESTINATION = {
     'taxes': 'institution:dcb:municipal_treasury',

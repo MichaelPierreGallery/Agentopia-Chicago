@@ -99,6 +99,13 @@ PROGRAMS = [
     {'id':'career_retraining','title':'Career Retraining Accelerator','institution':'motor_city_community_college','pathway':'Retraining','target_level':0,'duration_weeks':26,'tuition_week':22,'minimum_level':1,'minimum_age':18,'skills':['analysis','communication','digital_literacy','planning'],'credential':'Career Retraining Certificate','sector':'General'},
 ]
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+INSTITUTIONS = _city.localize(INSTITUTIONS)
+for _inst in INSTITUTIONS:
+    _inst['name'] = _city.get('education.institution_names', {}).get(_inst['id'], _inst['name'])
+PROGRAMS = _city.localize(PROGRAMS)
+
 PROGRAM_BY_ID = {p['id']: p for p in PROGRAMS}
 INSTITUTION_BY_ID = {i['id']: i for i in INSTITUTIONS}
 

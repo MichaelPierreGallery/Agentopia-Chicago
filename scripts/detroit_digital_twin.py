@@ -35,6 +35,11 @@ INFRA = [
   {"id":"DT-MICH-CENTRAL","sector":"mobility_innovation","inspiration":"Michigan Central mobility innovation district","criticality":70,"zones":["enterprise","labs","test_track","iot","guest"],"synthetic":True},
 ]
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+MARKET = _city.localize(MARKET)
+INFRA = _city.localize(INFRA)
+
 VENDOR_CATALOG = {
   "endpoint":["HP","Dell","Lenovo","Apple","ASUS","Acer","Microsoft"],
   "network":["Cisco","HPE Aruba","Juniper","Fortinet","Palo Alto Networks","Ubiquiti"],

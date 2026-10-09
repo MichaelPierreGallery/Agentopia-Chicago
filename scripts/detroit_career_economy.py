@@ -188,6 +188,10 @@ def build_catalog() -> list[dict[str, Any]]:
     return rows
 
 CATALOG = build_catalog()
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+SECTOR_ORGS = _city.get('career.sector_orgs', _city.localize(SECTOR_ORGS))
+
 BY_ID = {x['id']: x for x in CATALOG}
 BY_TITLE = {re.sub(r'[^a-z0-9]+', ' ', x['title'].lower()).strip(): x for x in CATALOG}
 

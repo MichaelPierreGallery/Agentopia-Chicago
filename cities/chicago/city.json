@@ -1,0 +1,1626 @@
+{
+  "schema_version": "1.0",
+  "id": "chicago",
+  "name": "Chicago",
+  "world_name": "Agentopia Chicago",
+  "state": "Illinois",
+  "state_abbr": "IL",
+  "tagline": "From Fort Dearborn to the fictional 2045 lakefront city.",
+  "notes": [
+    "All organizations, institutions and businesses below are fictional simulation entities.",
+    "Zone coordinates are abstract miles from the Loop (x = east, y = north) for travel-time simulation only. They are not GIS coordinates."
+  ],
+  "names": [
+    [
+      "University of Michigan-Flint Detroit Lab",
+      "Chicago Metropolitan University Lab"
+    ],
+    [
+      "Detroit Technical & Trades Academy",
+      "West Side Technical & Trades Academy"
+    ],
+    [
+      "Detroit Trades Academy",
+      "West Side Technical & Trades Academy"
+    ],
+    [
+      "Detroit Health Sciences College",
+      "Medical District Health Sciences College"
+    ],
+    [
+      "Detroit Health Sciences Institute",
+      "Medical District Health Sciences College"
+    ],
+    [
+      "Great Lakes Institute of Technology",
+      "Lakeshore Institute of Technology"
+    ],
+    [
+      "Great Lakes Technology Institute",
+      "Lakeshore Institute of Technology"
+    ],
+    [
+      "Great Lakes Graduate Research Institute",
+      "Hyde Park Graduate Research Institute"
+    ],
+    [
+      "Michigan Central Mobility Institute",
+      "Pullman Mobility & Logistics Institute"
+    ],
+    [
+      "Michigan Central Mobility District",
+      "Pullman Mobility & Logistics District"
+    ],
+    [
+      "Michigan Central Mobility Fare Network",
+      "Lakefront Mobility Fare Network"
+    ],
+    [
+      "Michigan Central mobility innovation district",
+      "Pullman mobility and logistics district"
+    ],
+    [
+      "Michigan Central AI Works",
+      "Fulton Market AI Works"
+    ],
+    [
+      "Michigan Central",
+      "Pullman"
+    ],
+    [
+      "Michigan Future Research Center",
+      "Illinois Future Research Center"
+    ],
+    [
+      "Motown Arts & Media Conservatory",
+      "Bronzeville Arts & Media Conservatory"
+    ],
+    [
+      "Motown Arts & Media Academy",
+      "Bronzeville Arts & Media Conservatory"
+    ],
+    [
+      "Motown Future Media",
+      "Bronzeville Future Media"
+    ],
+    [
+      "Motown Retail & Entertainment",
+      "Magnificent Mile Retail & Entertainment"
+    ],
+    [
+      "Motown",
+      "Bronzeville"
+    ],
+    [
+      "Motor City Community College",
+      "Windy City Community College"
+    ],
+    [
+      "Motor City Mental Wellness",
+      "Windy City Mental Wellness"
+    ],
+    [
+      "Motor City",
+      "Windy City"
+    ],
+    [
+      "Detroit Cyber Defense Cooperative",
+      "Lawndale Cyber Defense Cooperative"
+    ],
+    [
+      "Great Lakes Security Lab",
+      "West Side Security Lab"
+    ],
+    [
+      "Eastern Market",
+      "Maxwell Street"
+    ],
+    [
+      "Riverfront",
+      "Riverwalk"
+    ],
+    [
+      "Wayne Civic Justice Center",
+      "Cook Civic Justice Center"
+    ],
+    [
+      "Detroit/MI/federal",
+      "Chicago/IL/federal"
+    ],
+    [
+      "Detroit/Michigan-like",
+      "Chicago/Illinois-like"
+    ],
+    [
+      "Detroit Mobility Index",
+      "Chicago Mobility Index"
+    ],
+    [
+      "Detroit ARPA reporting indicates roughly 30% of households lack broadband or computing devices; used only as a coarse access baseline.",
+      "Chicago access baseline is a placeholder carried over from the Detroit model; replace with a sourced Chicago digital-equity figure before citing."
+    ],
+    [
+      "City of Detroit DoIT services",
+      "City of Chicago DoIT services"
+    ],
+    [
+      "Detroit traffic signals and SMART MODES",
+      "Chicago traffic signals and regional bus operations"
+    ],
+    [
+      "DDOT/QLINE-style transit operations",
+      "CTA/Metra-style transit operations"
+    ],
+    [
+      "Detroit-region manufacturing ecosystem",
+      "Chicago-region manufacturing and freight ecosystem"
+    ],
+    [
+      "Fort Detroit",
+      "Fort Dearborn"
+    ],
+    [
+      "Detroit Continuum",
+      "Chicago Continuum"
+    ],
+    [
+      "re:\\bDetroit\\b(?!, Michigan)",
+      "Chicago"
+    ],
+    [
+      "re:(?<!Lake )(?<!Detroit, )\\bMichigan\\b(?! Avenue| Ave\\b)",
+      "Illinois"
+    ]
+  ],
+  "ui_replacements": [
+    [
+      "From Fort Detroit to the fictional 2045 cyberpunk city.",
+      "From Fort Dearborn to the fictional 2045 lakefront city."
+    ],
+    [
+      "PHASE-DERIVED DETROIT CITY CLOCK",
+      "PHASE-DERIVED CHICAGO CITY CLOCK"
+    ]
+  ],
+  "mobility": {
+    "distance_scale": 1.0,
+    "fallback_corridor": "Chicago surface streets",
+    "zones": {
+      "The Loop": [
+        0.0,
+        0.0
+      ],
+      "River North": [
+        0.0,
+        1.0
+      ],
+      "Streeterville": [
+        0.8,
+        0.9
+      ],
+      "Gold Coast": [
+        0.3,
+        1.8
+      ],
+      "West Loop": [
+        -1.2,
+        0.2
+      ],
+      "Fulton Market": [
+        -1.3,
+        0.6
+      ],
+      "Goose Island": [
+        -1.3,
+        1.6
+      ],
+      "South Loop": [
+        0.3,
+        -1.3
+      ],
+      "Chinatown": [
+        -0.3,
+        -2.2
+      ],
+      "Pilsen": [
+        -1.6,
+        -2.0
+      ],
+      "Little Village": [
+        -4.5,
+        -2.6
+      ],
+      "Medical District": [
+        -2.3,
+        -0.6
+      ],
+      "North Lawndale": [
+        -5.0,
+        -1.9
+      ],
+      "Garfield Park": [
+        -4.6,
+        0.4
+      ],
+      "Austin": [
+        -7.5,
+        0.8
+      ],
+      "Humboldt Park": [
+        -4.0,
+        1.6
+      ],
+      "Wicker Park": [
+        -2.2,
+        1.8
+      ],
+      "Ukrainian Village": [
+        -2.2,
+        1.1
+      ],
+      "Logan Square": [
+        -3.6,
+        3.3
+      ],
+      "Lincoln Park": [
+        -0.6,
+        3.0
+      ],
+      "Lakeview": [
+        -0.5,
+        5.0
+      ],
+      "Uptown": [
+        -0.6,
+        6.8
+      ],
+      "Rogers Park": [
+        -1.0,
+        9.3
+      ],
+      "Albany Park": [
+        -4.4,
+        6.5
+      ],
+      "Portage Park": [
+        -6.6,
+        5.4
+      ],
+      "Bridgeport": [
+        -1.3,
+        -3.6
+      ],
+      "Bronzeville": [
+        0.4,
+        -4.0
+      ],
+      "Hyde Park": [
+        1.3,
+        -7.0
+      ],
+      "Woodlawn": [
+        1.3,
+        -8.3
+      ],
+      "South Shore": [
+        3.0,
+        -9.0
+      ],
+      "Englewood": [
+        -1.4,
+        -8.0
+      ],
+      "Chatham": [
+        0.4,
+        -10.5
+      ],
+      "Pullman": [
+        0.7,
+        -14.0
+      ],
+      "Midway": [
+        -6.4,
+        -6.5
+      ],
+      "O'Hare": [
+        -14.5,
+        6.8
+      ],
+      "Chicago Public Learning Network": [
+        -0.3,
+        0.1
+      ],
+      "West Side Technical & Trades Academy": [
+        -3.2,
+        -1.0
+      ],
+      "Windy City Community College": [
+        -1.9,
+        -0.4
+      ],
+      "Lakeshore Institute of Technology": [
+        0.0,
+        -3.3
+      ],
+      "Pullman Mobility & Logistics Institute": [
+        0.8,
+        -13.6
+      ],
+      "Medical District Health Sciences College": [
+        -2.3,
+        -0.6
+      ],
+      "Chicago Metropolitan University": [
+        0.2,
+        -0.8
+      ],
+      "Bronzeville Arts & Media Conservatory": [
+        0.4,
+        -4.3
+      ],
+      "Chicago Civic & Public Safety Academy": [
+        -2.0,
+        0.8
+      ],
+      "Hyde Park Graduate Research Institute": [
+        1.4,
+        -7.1
+      ]
+    },
+    "corridors": [
+      {
+        "name": "State Street / Michigan Avenue",
+        "when": [
+          {
+            "abs_x_lt": 1.2
+          },
+          {
+            "abs_dy_lt": 3.5
+          }
+        ]
+      },
+      {
+        "name": "Lake Shore Drive",
+        "when": [
+          {
+            "min_y_gt": -0.5
+          },
+          {
+            "min_x_gt": -1.2
+          },
+          {
+            "abs_dy_gt": 2.5
+          }
+        ]
+      },
+      {
+        "name": "Lake Shore Drive",
+        "when": [
+          {
+            "max_y_lt": 1.5
+          },
+          {
+            "max_x_gt": 1.0
+          },
+          {
+            "min_x_gt": -0.5
+          },
+          {
+            "abs_dy_gt": 2.5
+          }
+        ]
+      },
+      {
+        "name": "Dan Ryan Expressway (I-90/94)",
+        "when": [
+          {
+            "min_y_lt": -2.5
+          },
+          {
+            "max_x_lt": 1.5
+          },
+          {
+            "min_x_gt": -2.5
+          }
+        ]
+      },
+      {
+        "name": "Eisenhower Expressway (I-290)",
+        "when": [
+          {
+            "min_x_lt": -2.5
+          },
+          {
+            "abs_dy_lt": 2.5
+          }
+        ]
+      },
+      {
+        "name": "Stevenson Expressway (I-55)",
+        "when": [
+          {
+            "min_y_lt": -1.5
+          },
+          {
+            "min_x_lt": -2.5
+          },
+          {
+            "max_y_lt": 1.0
+          }
+        ]
+      },
+      {
+        "name": "Kennedy Expressway (I-90/94)",
+        "when": [
+          {
+            "min_x_lt": -1.5
+          },
+          {
+            "max_y_gt": 1.5
+          },
+          {
+            "min_y_gt": -0.5
+          }
+        ]
+      },
+      {
+        "name": "Pulaski / Cicero corridor",
+        "when": [
+          {
+            "min_x_lt": -4.0
+          },
+          {
+            "abs_dy_gt": 3.0
+          }
+        ]
+      },
+      {
+        "name": "Western Avenue",
+        "when": [
+          {
+            "min_x_lt": -2.0
+          },
+          {
+            "abs_dy_gt": 2.0
+          }
+        ]
+      }
+    ],
+    "modes": {
+      "walk": {
+        "speed": 3.1,
+        "wait": 0,
+        "parking": 0,
+        "road": false,
+        "transit": false,
+        "active": true
+      },
+      "bike": {
+        "speed": 10.5,
+        "wait": 1,
+        "parking": 2,
+        "road": false,
+        "transit": false,
+        "active": true
+      },
+      "e_bike": {
+        "speed": 15.0,
+        "wait": 1,
+        "parking": 2,
+        "road": false,
+        "transit": false,
+        "active": true
+      },
+      "cta_bus": {
+        "speed": 12.0,
+        "wait": 8,
+        "parking": 0,
+        "road": true,
+        "transit": true,
+        "active": false
+      },
+      "cta_l": {
+        "speed": 20.0,
+        "wait": 6,
+        "parking": 0,
+        "road": false,
+        "transit": true,
+        "active": false
+      },
+      "metra": {
+        "speed": 30.0,
+        "wait": 14,
+        "parking": 0,
+        "road": false,
+        "transit": true,
+        "active": false
+      },
+      "pace_bus": {
+        "speed": 16.0,
+        "wait": 13,
+        "parking": 0,
+        "road": true,
+        "transit": true,
+        "active": false
+      },
+      "ridehail": {
+        "speed": 20.0,
+        "wait": 6,
+        "parking": 0,
+        "road": true,
+        "transit": false,
+        "active": false
+      },
+      "private_car": {
+        "speed": 22.0,
+        "wait": 0,
+        "parking": 9,
+        "road": true,
+        "transit": false,
+        "active": false
+      },
+      "private_ev": {
+        "speed": 22.0,
+        "wait": 0,
+        "parking": 9,
+        "road": true,
+        "transit": false,
+        "active": false
+      },
+      "autonomous_ev": {
+        "speed": 21.0,
+        "wait": 2,
+        "parking": 3,
+        "road": true,
+        "transit": false,
+        "active": false
+      }
+    },
+    "mode_choice": {
+      "youth_transit": "cta_bus",
+      "rail": [
+        {
+          "mode": "metra",
+          "min_distance": 5.0,
+          "prob": 0.55,
+          "zones": [
+            "The Loop",
+            "West Loop",
+            "South Loop",
+            "Hyde Park",
+            "Woodlawn",
+            "South Shore",
+            "Pullman",
+            "Rogers Park",
+            "Portage Park",
+            "Lakeview",
+            "Uptown",
+            "Chatham",
+            "Hyde Park Graduate Research Institute",
+            "Pullman Mobility & Logistics Institute"
+          ]
+        },
+        {
+          "mode": "cta_l",
+          "min_distance": 0.0,
+          "prob": 0.62,
+          "zones": [
+            "The Loop",
+            "River North",
+            "West Loop",
+            "Fulton Market",
+            "South Loop",
+            "Chinatown",
+            "Pilsen",
+            "Little Village",
+            "Medical District",
+            "North Lawndale",
+            "Garfield Park",
+            "Austin",
+            "Wicker Park",
+            "Ukrainian Village",
+            "Logan Square",
+            "Lincoln Park",
+            "Lakeview",
+            "Uptown",
+            "Rogers Park",
+            "Albany Park",
+            "Bridgeport",
+            "Bronzeville",
+            "Woodlawn",
+            "Englewood",
+            "Chatham",
+            "Midway",
+            "O'Hare",
+            "Chicago Public Learning Network",
+            "West Side Technical & Trades Academy",
+            "Windy City Community College",
+            "Lakeshore Institute of Technology",
+            "Medical District Health Sciences College",
+            "Chicago Metropolitan University",
+            "Bronzeville Arts & Media Conservatory",
+            "Chicago Civic & Public Safety Academy"
+          ]
+        }
+      ],
+      "bus": [
+        [
+          "cta_bus",
+          0.85
+        ],
+        [
+          "pace_bus",
+          0.15
+        ]
+      ]
+    },
+    "institution_zone": {
+      "detroit_public_learning": "Chicago Public Learning Network",
+      "motor_city_community_college": "Windy City Community College",
+      "detroit_trades_academy": "West Side Technical & Trades Academy",
+      "great_lakes_technology": "Lakeshore Institute of Technology",
+      "detroit_metropolitan_university": "Chicago Metropolitan University",
+      "detroit_health_sciences": "Medical District Health Sciences College",
+      "michigan_central_mobility": "Pullman Mobility & Logistics Institute",
+      "motown_arts_media": "Bronzeville Arts & Media Conservatory",
+      "detroit_civic_academy": "Chicago Civic & Public Safety Academy",
+      "great_lakes_research": "Hyde Park Graduate Research Institute"
+    },
+    "sector_zone": {
+      "Medicine & Health": "Medical District",
+      "AI, Software & Technology": "Fulton Market",
+      "Cybersecurity & Intelligence": "The Loop",
+      "Engineering & Manufacturing": "Pullman",
+      "Mobility, Robotics & Infrastructure": "Pullman",
+      "Law, Government & Public Safety": "The Loop",
+      "Science & Research": "Hyde Park",
+      "Education": "South Loop",
+      "Creative, Media & Entertainment": "River North",
+      "Construction & Skilled Trades": "Bridgeport",
+      "Business & Operations": "The Loop",
+      "Community, Hospitality & Everyday Economy": "Fulton Market",
+      "Executive, Ownership & Finance": "The Loop"
+    },
+    "work_keyword_zone": [
+      [
+        "lawndale",
+        "North Lawndale"
+      ],
+      [
+        "guardian",
+        "The Loop"
+      ],
+      [
+        "obsidian",
+        "Goose Island"
+      ],
+      [
+        "health",
+        "Medical District"
+      ],
+      [
+        "hospital",
+        "Medical District"
+      ],
+      [
+        "university",
+        "South Loop"
+      ],
+      [
+        "college",
+        "South Loop"
+      ],
+      [
+        "restaurant",
+        "Fulton Market"
+      ],
+      [
+        "market",
+        "Fulton Market"
+      ],
+      [
+        "manufactur",
+        "Pullman"
+      ],
+      [
+        "freight",
+        "Pullman"
+      ],
+      [
+        "logistics",
+        "Pullman"
+      ]
+    ],
+    "default_work_zone": "The Loop",
+    "default_school_zone": "South Loop",
+    "k12_zone": "Chicago Public Learning Network",
+    "home_fallback_zones": [
+      "Lincoln Park",
+      "Logan Square",
+      "Pilsen",
+      "Bronzeville",
+      "Hyde Park",
+      "North Lawndale",
+      "Austin",
+      "Uptown"
+    ],
+    "leisure_zones": [
+      "The Loop",
+      "Fulton Market"
+    ],
+    "errand_zone": "Pilsen",
+    "rail_core_label": "CTA 'L' + Metra"
+  },
+  "human_economy": {
+    "jurisdiction": "Agentopia Chicago 2045",
+    "taxes": {
+      "city_income_rate": 0.0,
+      "state_income_rate": 0.0495
+    },
+    "neighborhoods": [
+      [
+        "The Loop",
+        1.5
+      ],
+      [
+        "River North",
+        1.6
+      ],
+      [
+        "Streeterville",
+        1.65
+      ],
+      [
+        "Gold Coast",
+        1.75
+      ],
+      [
+        "West Loop",
+        1.62
+      ],
+      [
+        "South Loop",
+        1.4
+      ],
+      [
+        "Lincoln Park",
+        1.6
+      ],
+      [
+        "Lakeview",
+        1.4
+      ],
+      [
+        "Wicker Park",
+        1.38
+      ],
+      [
+        "Ukrainian Village",
+        1.3
+      ],
+      [
+        "Logan Square",
+        1.25
+      ],
+      [
+        "Uptown",
+        1.1
+      ],
+      [
+        "Rogers Park",
+        0.98
+      ],
+      [
+        "Albany Park",
+        0.95
+      ],
+      [
+        "Portage Park",
+        0.95
+      ],
+      [
+        "Humboldt Park",
+        0.88
+      ],
+      [
+        "Pilsen",
+        1.0
+      ],
+      [
+        "Little Village",
+        0.82
+      ],
+      [
+        "Bridgeport",
+        0.95
+      ],
+      [
+        "Chinatown",
+        1.0
+      ],
+      [
+        "Bronzeville",
+        0.95
+      ],
+      [
+        "Hyde Park",
+        1.15
+      ],
+      [
+        "Woodlawn",
+        0.85
+      ],
+      [
+        "South Shore",
+        0.78
+      ],
+      [
+        "Chatham",
+        0.76
+      ],
+      [
+        "Englewood",
+        0.62
+      ],
+      [
+        "North Lawndale",
+        0.66
+      ],
+      [
+        "Garfield Park",
+        0.68
+      ],
+      [
+        "Austin",
+        0.7
+      ],
+      [
+        "Pullman",
+        0.72
+      ]
+    ],
+    "unit_types": [
+      [
+        "Studio Apartment",
+        0,
+        98
+      ],
+      [
+        "One-Bedroom Apartment",
+        1,
+        122
+      ],
+      [
+        "Two-Bedroom Apartment",
+        2,
+        158
+      ],
+      [
+        "Loft",
+        1,
+        150
+      ],
+      [
+        "Two-Flat Unit",
+        2,
+        175
+      ],
+      [
+        "Chicago Bungalow",
+        3,
+        190
+      ],
+      [
+        "Greystone Flat",
+        3,
+        200
+      ],
+      [
+        "Family House",
+        4,
+        230
+      ]
+    ]
+  },
+  "education": {
+    "institution_names": {
+      "detroit_public_learning": "Chicago Public Learning Network",
+      "detroit_trades_academy": "West Side Technical & Trades Academy",
+      "motor_city_community_college": "Windy City Community College",
+      "great_lakes_technology": "Lakeshore Institute of Technology",
+      "michigan_central_mobility": "Pullman Mobility & Logistics Institute",
+      "detroit_health_sciences": "Medical District Health Sciences College",
+      "detroit_metropolitan_university": "Chicago Metropolitan University",
+      "motown_arts_media": "Bronzeville Arts & Media Conservatory",
+      "detroit_civic_academy": "Chicago Civic & Public Safety Academy",
+      "great_lakes_research": "Hyde Park Graduate Research Institute"
+    }
+  },
+  "lifecycle": {
+    "home_origin": "Chicago, Illinois",
+    "origins": [
+      "Chicago, Illinois",
+      "Detroit, Michigan",
+      "Milwaukee, Wisconsin",
+      "Gary, Indiana",
+      "St. Louis, Missouri",
+      "Memphis, Tennessee",
+      "Jackson, Mississippi",
+      "Atlanta, Georgia",
+      "New Orleans, Louisiana",
+      "Houston, Texas",
+      "Los Angeles, California",
+      "New York, New York",
+      "Toronto, Ontario",
+      "Mexico City, Mexico",
+      "Guadalajara, Mexico",
+      "San Juan, Puerto Rico",
+      "Warsaw, Poland",
+      "Kyiv, Ukraine",
+      "Lagos, Nigeria",
+      "Accra, Ghana",
+      "Manila, Philippines",
+      "Mumbai, India",
+      "Seoul, South Korea",
+      "Beirut, Lebanon",
+      "London, United Kingdom"
+    ]
+  },
+  "lineage": {
+    "home_city": "Chicago",
+    "home_region": "Illinois",
+    "domestic": [
+      [
+        "Detroit",
+        "Michigan"
+      ],
+      [
+        "Milwaukee",
+        "Wisconsin"
+      ],
+      [
+        "Gary",
+        "Indiana"
+      ],
+      [
+        "St. Louis",
+        "Missouri"
+      ],
+      [
+        "Memphis",
+        "Tennessee"
+      ],
+      [
+        "Jackson",
+        "Mississippi"
+      ],
+      [
+        "Atlanta",
+        "Georgia"
+      ],
+      [
+        "Cleveland",
+        "Ohio"
+      ],
+      [
+        "Minneapolis",
+        "Minnesota"
+      ],
+      [
+        "Indianapolis",
+        "Indiana"
+      ],
+      [
+        "New York City",
+        "New York"
+      ],
+      [
+        "New Orleans",
+        "Louisiana"
+      ],
+      [
+        "Houston",
+        "Texas"
+      ],
+      [
+        "Los Angeles",
+        "California"
+      ],
+      [
+        "Washington",
+        "District of Columbia"
+      ],
+      [
+        "Birmingham",
+        "Alabama"
+      ],
+      [
+        "Pittsburgh",
+        "Pennsylvania"
+      ],
+      [
+        "Denver",
+        "Colorado"
+      ],
+      [
+        "Seattle",
+        "Washington"
+      ],
+      [
+        "Philadelphia",
+        "Pennsylvania"
+      ]
+    ],
+    "international": [
+      [
+        "Mexico City",
+        "Mexico"
+      ],
+      [
+        "Guadalajara",
+        "Mexico"
+      ],
+      [
+        "Monterrey",
+        "Mexico"
+      ],
+      [
+        "Warsaw",
+        "Poland"
+      ],
+      [
+        "Krakow",
+        "Poland"
+      ],
+      [
+        "Kyiv",
+        "Ukraine"
+      ],
+      [
+        "Lagos",
+        "Nigeria"
+      ],
+      [
+        "Accra",
+        "Ghana"
+      ],
+      [
+        "Nairobi",
+        "Kenya"
+      ],
+      [
+        "Manila",
+        "Philippines"
+      ],
+      [
+        "Mumbai",
+        "India"
+      ],
+      [
+        "Bengaluru",
+        "India"
+      ],
+      [
+        "Seoul",
+        "South Korea"
+      ],
+      [
+        "Beirut",
+        "Lebanon"
+      ],
+      [
+        "Amman",
+        "Jordan"
+      ],
+      [
+        "Bogota",
+        "Colombia"
+      ],
+      [
+        "Toronto",
+        "Canada"
+      ],
+      [
+        "London",
+        "United Kingdom"
+      ],
+      [
+        "Dublin",
+        "Ireland"
+      ],
+      [
+        "Athens",
+        "Greece"
+      ]
+    ]
+  },
+  "world_context": {
+    "world_id": "chicago",
+    "world_name": "Agentopia Chicago",
+    "climate_profile": "chicago-lakefront-north",
+    "calendar_packs": [
+      "us-public-civic",
+      "us-illinois-civic"
+    ],
+    "climate_profiles": {
+      "chicago-lakefront-north": {
+        "label": "Chicago lakefront four-season synthetic climate (lake-effect and wind)",
+        "hemisphere": "north",
+        "season_model": "meteorological",
+        "weather": {
+          "winter": [
+            [
+              "cold_clear",
+              0.32,
+              [
+                12,
+                32
+              ],
+              1.04,
+              1.12,
+              1.2
+            ],
+            [
+              "snow",
+              0.3,
+              [
+                14,
+                30
+              ],
+              1.28,
+              1.34,
+              1.26
+            ],
+            [
+              "winter_mix",
+              0.14,
+              [
+                24,
+                36
+              ],
+              1.36,
+              1.42,
+              1.2
+            ],
+            [
+              "wind",
+              0.14,
+              [
+                8,
+                28
+              ],
+              1.1,
+              1.22,
+              1.24
+            ],
+            [
+              "cloudy",
+              0.1,
+              [
+                24,
+                36
+              ],
+              1.06,
+              1.08,
+              1.16
+            ]
+          ],
+          "spring": [
+            [
+              "mild",
+              0.36,
+              [
+                40,
+                64
+              ],
+              1.0,
+              1.0,
+              0.96
+            ],
+            [
+              "rain",
+              0.34,
+              [
+                38,
+                60
+              ],
+              1.13,
+              1.18,
+              0.98
+            ],
+            [
+              "storm",
+              0.1,
+              [
+                46,
+                68
+              ],
+              1.24,
+              1.32,
+              1.02
+            ],
+            [
+              "cool_clear",
+              0.1,
+              [
+                34,
+                54
+              ],
+              1.02,
+              1.04,
+              1.03
+            ],
+            [
+              "wind",
+              0.1,
+              [
+                38,
+                58
+              ],
+              1.08,
+              1.15,
+              1.02
+            ]
+          ],
+          "summer": [
+            [
+              "clear",
+              0.44,
+              [
+                70,
+                86
+              ],
+              1.0,
+              1.0,
+              1.06
+            ],
+            [
+              "hot",
+              0.26,
+              [
+                80,
+                95
+              ],
+              1.03,
+              1.14,
+              1.32
+            ],
+            [
+              "storm",
+              0.2,
+              [
+                70,
+                88
+              ],
+              1.2,
+              1.3,
+              1.14
+            ],
+            [
+              "rain",
+              0.1,
+              [
+                66,
+                82
+              ],
+              1.1,
+              1.15,
+              1.03
+            ]
+          ],
+          "autumn": [
+            [
+              "clear",
+              0.4,
+              [
+                46,
+                70
+              ],
+              1.0,
+              1.0,
+              0.98
+            ],
+            [
+              "rain",
+              0.3,
+              [
+                42,
+                62
+              ],
+              1.11,
+              1.16,
+              1.0
+            ],
+            [
+              "wind",
+              0.2,
+              [
+                38,
+                60
+              ],
+              1.09,
+              1.17,
+              1.03
+            ],
+            [
+              "cold_clear",
+              0.1,
+              [
+                32,
+                52
+              ],
+              1.03,
+              1.05,
+              1.08
+            ]
+          ]
+        }
+      }
+    }
+  },
+  "factions": {
+    "ThAI Guardians": "Chicago command center for the ThAI Guardians: defense, mentoring, training, local AI operations and civic protection. Operates a West Side training floor in North Lawndale.",
+    "Obsidian Network": "Goose Island command center for the fictional Obsidian Network: internal strategy, research, recruiting and intelligence analysis."
+  },
+  "history": {
+    "city": "Chicago",
+    "timeline": [
+      {
+        "year": "1780s",
+        "era": "Du Sable's trading post",
+        "text": "Jean Baptiste Point du Sable, a Black trader, establishes the first permanent non-Indigenous settlement at the mouth of the Chicago River on land long used by Potawatomi and other nations.",
+        "kind": "history"
+      },
+      {
+        "year": "1803",
+        "era": "Fort Dearborn",
+        "text": "The U.S. Army builds Fort Dearborn on the river.",
+        "kind": "history"
+      },
+      {
+        "year": "1837",
+        "era": "City of Chicago",
+        "text": "Chicago incorporates as a city.",
+        "kind": "history"
+      },
+      {
+        "year": "1848",
+        "era": "Canal and rail",
+        "text": "The Illinois & Michigan Canal opens and the Chicago Board of Trade is founded; Chicago becomes the nation's rail and grain hub.",
+        "kind": "history"
+      },
+      {
+        "year": "1871",
+        "era": "The Great Fire",
+        "text": "The Great Chicago Fire destroys much of the city, which rebuilds in brick, stone and steel.",
+        "kind": "history"
+      },
+      {
+        "year": "1885",
+        "era": "The skyscraper",
+        "text": "The Home Insurance Building, widely cited as the first skyscraper, is completed in the Loop.",
+        "kind": "history"
+      },
+      {
+        "year": "1893",
+        "era": "The White City",
+        "text": "The World's Columbian Exposition puts Chicago on the global stage.",
+        "kind": "history"
+      },
+      {
+        "year": "1900",
+        "era": "Reversing the river",
+        "text": "The Sanitary and Ship Canal reverses the flow of the Chicago River away from Lake Michigan.",
+        "kind": "history"
+      },
+      {
+        "year": "1916-1970",
+        "era": "The Great Migration",
+        "text": "Hundreds of thousands of Black Southerners arrive, building Bronzeville's Black Metropolis and reshaping the city's culture and politics.",
+        "kind": "history"
+      },
+      {
+        "year": "1942",
+        "era": "Chicago Pile-1",
+        "text": "Scientists at the University of Chicago achieve the first self-sustaining nuclear chain reaction.",
+        "kind": "history"
+      },
+      {
+        "year": "1966",
+        "era": "Chicago Freedom Movement",
+        "text": "Dr. Martin Luther King Jr. moves into an apartment in North Lawndale to campaign for open housing.",
+        "kind": "history"
+      },
+      {
+        "year": "1983",
+        "era": "Harold Washington",
+        "text": "Harold Washington is elected Chicago's first Black mayor.",
+        "kind": "history"
+      },
+      {
+        "year": "2004",
+        "era": "Millennium Park",
+        "text": "Millennium Park opens on the lakefront.",
+        "kind": "history"
+      },
+      {
+        "year": "2031",
+        "era": "Lakefront Compute Compact",
+        "text": "Fictional: the city commits to neighborhood-scale local AI so routine public work runs on right-sized models instead of distant clouds.",
+        "kind": "fiction"
+      },
+      {
+        "year": "2038",
+        "era": "West Side Cyber Commons",
+        "text": "Fictional: North Lawndale becomes the city's intergenerational cyber-defense training ground, where teens and elders train side by side.",
+        "kind": "fiction"
+      },
+      {
+        "year": "2045",
+        "era": "Agentopia Chicago",
+        "text": "Fictional: a persistent AI society lives, works and learns across the city's neighborhoods.",
+        "kind": "fiction"
+      }
+    ]
+  },
+  "seed": {
+    "base_world": "apartment",
+    "building_name": "Douglass Park Commons",
+    "persona_preamble": "AGENTOPIA CHICAGO ORIGIN: You are a founding resident of Douglass Park Commons in North Lawndale, Chicago, in 2045. Any earlier life described below is your backstory.",
+    "persona_rewrites": [
+      [
+        "Bremer Apartment",
+        "Douglass Park Commons"
+      ],
+      [
+        "\\bBremer\\b",
+        "Douglass Park Commons"
+      ],
+      [
+        "Greenwich Village",
+        "North Lawndale"
+      ],
+      [
+        "West Village",
+        "Wicker Park"
+      ],
+      [
+        "East Village",
+        "Ukrainian Village"
+      ],
+      [
+        "Upper West Side",
+        "Lincoln Park"
+      ],
+      [
+        "Upper East Side",
+        "Gold Coast"
+      ],
+      [
+        "Lower East Side",
+        "Pilsen"
+      ],
+      [
+        "Central Park",
+        "Douglass Park"
+      ],
+      [
+        "Times Square",
+        "Michigan Avenue"
+      ],
+      [
+        "Wall Street",
+        "LaSalle Street"
+      ],
+      [
+        "\\bMidtown\\b",
+        "the Loop"
+      ],
+      [
+        "\\bTribeca\\b",
+        "the West Loop"
+      ],
+      [
+        "\\bSoHo\\b",
+        "River North"
+      ],
+      [
+        "\\bin Chelsea\\b",
+        "in the West Loop"
+      ],
+      [
+        "along the Hudson",
+        "along the lakefront"
+      ],
+      [
+        "Hudson River path",
+        "lakefront trail"
+      ],
+      [
+        "Hudson River",
+        "lakefront"
+      ],
+      [
+        "Greenwich House Music School",
+        "Pilsen House Music School"
+      ],
+      [
+        "Brooklyn office",
+        "West Side office"
+      ],
+      [
+        "Brooklyn neighborhoods",
+        "West Side neighborhoods"
+      ],
+      [
+        "Brooklyn design studio",
+        "Logan Square design studio"
+      ],
+      [
+        "a Brooklyn Boulders gym",
+        "a climbing gym"
+      ],
+      [
+        "across the Brooklyn Bridge",
+        "along the Chicago Riverwalk"
+      ],
+      [
+        "across Brooklyn and Manhattan",
+        "across Chicago"
+      ],
+      [
+        "across Manhattan and Brooklyn",
+        "across Chicago"
+      ],
+      [
+        "a Brooklyn flea market",
+        "the Maxwell Street Market"
+      ],
+      [
+        "\\bNew York City\\b",
+        "Chicago"
+      ],
+      [
+        "(?<!, )\\bNew York\\b(?! (?:State|Times|University|Post|Knicks|Yankees|Mets|Giants|Jets|Rangers|Liberty))",
+        "Chicago"
+      ],
+      [
+        "\\bNYC\\b",
+        "Chicago"
+      ],
+      [
+        "\\bManhattan\\b(?! (?:Project|project|cocktail))",
+        "Chicago"
+      ],
+      [
+        "StreetEasy",
+        "a rental listings site"
+      ],
+      [
+        "MetroCard",
+        "Ventra card"
+      ],
+      [
+        "\\bthe subway\\b",
+        "the 'L'"
+      ],
+      [
+        "\\bsubway\\b",
+        "'L'"
+      ]
+    ],
+    "persona_rewrites_are_regex": true,
+    "notes": "Rewrites move the residents' present life to Chicago. Birthplaces and family ties elsewhere (Queens, New Jersey, etc.) are left alone on purpose: they read as transplants."
+  },
+  "cognitive": {
+    "base_culture": {
+      "Chicago grit and resilience": 0.86,
+      "neighborhood loyalty": 0.8,
+      "civic organizing tradition": 0.76,
+      "blues, jazz and house music identity": 0.74,
+      "community self-determination": 0.72,
+      "digital sovereignty": 0.7,
+      "lakefront and park life": 0.66
+    }
+  }
+}
