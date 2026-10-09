@@ -82,7 +82,11 @@ if not (WORLD / "config.json").exists() or not (WORLD / "persona").exists():
 cfg_path = WORLD / "config.json"
 cfg = read(cfg_path, {})
 world = cfg.setdefault("world", {})
-world["name"] = "detroit"
+try:
+    import agentopia_city as _city  # AGENTOPIA_CITY_PACK
+    world["name"] = _city.CITY_ID
+except Exception:
+    world["name"] = "detroit"
 world["data_dir"] = "detroit_persistent"
 time_cfg = world.setdefault("time", {})
 start = int(time_cfg.get("start_year", 2045))

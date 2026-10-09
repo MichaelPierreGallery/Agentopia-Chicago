@@ -19,6 +19,15 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from typing import Any, Iterable
 
+# AGENTOPIA_CITY_PACK: the Live World observer follows the active city pack.
+_APP_ROOT = Path(__file__).resolve().parents[1]
+if str(_APP_ROOT) not in sys.path:
+    sys.path.insert(0, str(_APP_ROOT))
+try:
+    from src import city_pack as _city
+except Exception:  # pragma: no cover
+    _city = None
+
 TIME_RE = re.compile(r"Y(?P<year>\d+)-W(?P<week>\d+)-(?P<stage>[A-Za-z_]+)(?:-D(?P<day>\d+))?")
 RUN_RE = re.compile(r".+_\d{6,}$")
 
@@ -914,13 +923,13 @@ class WorldReader:
                 "key": "faction/thai_guardians_hq",
                 "display_name": "ThAI Guardians HQ",
                 "leader": "TGOT",
-                "description": "Detroit command center for the ThAI Guardians: defense, mentoring, training, local AI operations and civic protection.",
+                "description": (_city.get("factions", {}).get("ThAI Guardians") if _city else None) or "Detroit command center for the ThAI Guardians: defense, mentoring, training, local AI operations and civic protection.",
             },
             "obsidian_network": {
                 "key": "faction/obsidian_network_hq",
                 "display_name": "Obsidian Network HQ",
                 "leader": "Morbeious",
-                "description": "Dark Detroit command center for the fictional Obsidian Network: internal strategy, research, recruiting and intelligence analysis.",
+                "description": (_city.get("factions", {}).get("Obsidian Network") if _city else None) or "Dark Detroit command center for the fictional Obsidian Network: internal strategy, research, recruiting and intelligence analysis.",
             },
         }
         state_factions = faction_state.get("factions", {}) if isinstance(faction_state, dict) else {}
@@ -998,12 +1007,15 @@ class WorldReader:
         else:
             engine_state = "stopped"
 
+        city_id = _city.CITY_ID if _city else "detroit"
         detroit_history = read_json(run / "detroit_history.json", {})
         if not detroit_history:
-            detroit_history = read_json(self.root / "data" / "detroit" / "detroit_history.json", {})
+            detroit_history = read_json(self.root / "data" / city_id / "detroit_history.json", {})
+        if not detroit_history and _city and not _city.IS_DEFAULT:
+            detroit_history = _city.get("history", {})
         founders_registry = read_json(run / "founders.json", {})
         if not founders_registry:
-            founders_registry = read_json(self.root / "data" / "detroit" / "founders.json", {})
+            founders_registry = read_json(self.root / "data" / city_id / "founders.json", {})
         speed_state = read_json(self.root / "data" / "simulation_speed.json", {"mode":"normal","label":"Normal","multiplier":1,"timeline_multiplier":1})
         # AGENTOPIA_COGNITION_SNAPSHOT_V130
         cognition_summary = read_json(run / "cognition" / "summary.json", {})
@@ -1147,6 +1159,8 @@ class AppHandler(BaseHTTPRequestHandler):
             return
         data = path.read_bytes()
         ctype, _ = mimetypes.guess_type(path.name)
+        if _city and not _city.IS_DEFAULT and path.suffix in {".html", ".js", ".css"}:
+            data = _city.localize_ui(data.decode("utf-8")).encode("utf-8")
         try:
             self.send_response(HTTPStatus.OK)
             self.send_header("Content-Type", ctype or "application/octet-stream")

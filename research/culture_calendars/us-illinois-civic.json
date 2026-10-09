@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "calendar_id": "us-illinois-civic",
+  "community_name": "Illinois state civic calendar (additions to the U.S. federal baseline)",
+  "calendar_type": "public_civic",
+  "region": "Illinois, United States",
+  "language": {
+    "bcp47": "en-US",
+    "name": "English (United States)"
+  },
+  "provenance": {
+    "basis": [
+      "authoritative_sources"
+    ],
+    "notes": "Illinois state holidays not covered by us-public-civic. Lincoln's Birthday (February 12) and Casimir Pulaski Day (first Monday in March) are Illinois state holidays; verify current statute (5 ILCS 490) before relying on business effects."
+  },
+  "holidays": [
+    {
+      "id": "lincolns-birthday",
+      "native_name": "Lincoln's Birthday",
+      "language": "en-US",
+      "observance_type": "public_holiday",
+      "business_effect": "public_services_reduced",
+      "community_effect": "public_observance",
+      "rule": {
+        "type": "fixed",
+        "month": 2,
+        "day": 12,
+        "observed_if_weekend": true
+      }
+    },
+    {
+      "id": "casimir-pulaski-day",
+      "native_name": "Casimir Pulaski Day",
+      "language": "en-US",
+      "observance_type": "public_holiday",
+      "business_effect": "public_services_reduced",
+      "community_effect": "public_observance",
+      "rule": {
+        "type": "nth_weekday",
+        "month": 3,
+        "weekday": "monday",
+        "nth": 1
+      }
+    }
+  ]
+}

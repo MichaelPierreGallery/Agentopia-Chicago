@@ -53,6 +53,9 @@ PROVIDERS = [
     {'id':'great_lakes_specialty','name':'Great Lakes Specialty Center','type':'specialty_care','specialties':['chronic','orthopedic','neurology','cardio'],'weekly_capacity':30,'entity_type':'private'},
     {'id':'detroit_emergency_network','name':'Detroit Emergency Network','type':'emergency_care','specialties':['emergency','trauma'],'weekly_capacity':22,'entity_type':'nonprofit'},
 ]
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+PROVIDERS = _city.localize(PROVIDERS)
 PROVIDER_BY_ID = {p['id']:p for p in PROVIDERS}
 
 EVENT_TYPES = {
@@ -188,9 +191,9 @@ def insurance_for(name:str,age:int,career:dict[str,Any],hardship:int)->dict[str,
     status=str(career.get('status') or 'unknown')
     income=int(career.get('weekly_income',0) or 0)
     if age>=65:
-        return {'plan':'Great Lakes SeniorCare','type':'public_senior','coverage':POLICY['senior_coverage'],'premium_source':'Human Economy insurance budget'}
+        return {'plan':_city.localize_text('Great Lakes SeniorCare'),'type':'public_senior','coverage':POLICY['senior_coverage'],'premium_source':'Human Economy insurance budget'}
     if hardship>=70 or (status=='unemployed' and income<=0):
-        return {'plan':'Detroit Care Access','type':'public_assistance','coverage':POLICY['public_coverage'],'premium_source':'Human Economy + public support'}
+        return {'plan':_city.localize_text('Detroit Care Access'),'type':'public_assistance','coverage':POLICY['public_coverage'],'premium_source':'Human Economy + public support'}
     if status=='employed':
         return {'plan':'Employer Standard Health','type':'employer','coverage':POLICY['employer_coverage'],'premium_source':'Human Economy insurance budget'}
     if status=='self_employed':
@@ -199,7 +202,7 @@ def insurance_for(name:str,age:int,career:dict[str,Any],hardship:int)->dict[str,
     # but it never depends on race, gender, religion, ethnicity, or other protected traits.
     if stable_rng(name,'coverage-gap').random()<0.10:
         return {'plan':'Uninsured','type':'uninsured','coverage':0.0,'premium_source':'none'}
-    return {'plan':'Detroit Basic Health','type':'basic','coverage':POLICY['basic_coverage'],'premium_source':'Human Economy insurance budget'}
+    return {'plan':_city.localize_text('Detroit Basic Health'),'type':'basic','coverage':POLICY['basic_coverage'],'premium_source':'Human Economy insurance budget'}
 
 
 def seed_record(name:str,profile:dict[str,Any],year:int)->dict[str,Any]:

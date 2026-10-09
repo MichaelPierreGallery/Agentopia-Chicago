@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "world_id": "chicago",
+  "world_name": "Agentopia Chicago",
+  "climate_profile": "chicago-lakefront-north",
+  "calendar_packs": [
+    "us-public-civic",
+    "us-illinois-civic"
+  ],
+  "notes": [
+    "Synthetic weather is simulation context, not a forecast.",
+    "Community/cultural calendars must be explicitly enabled; TAi does not infer culture from citizen identity."
+  ]
+}

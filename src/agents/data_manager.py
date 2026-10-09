@@ -18,6 +18,14 @@ from src.utils import get_logger, clip_str, num_tokens_from_string
 from src.agents.prompts import PERSONA_TEMPLATE
 from src.utils import get_config
 
+
+def _city_world_name() -> str:
+    try:
+        from src.city_pack import world_name
+        return world_name()
+    except Exception:
+        return "Agentopia Detroit"
+
 ERROR_LOGGER = get_logger("error")
 
 config = get_config()
@@ -1055,9 +1063,9 @@ class DataManager:
         lineage = profile.get("lineage") if isinstance(profile.get("lineage"), dict) else {}
         origin = profile.get("origin") if isinstance(profile.get("origin"), dict) else {}
         if founder_id:
-            values += f"\n{indent}- Agentopia Detroit Founding Citizen: {founder_id}"
+            values += f"\n{indent}- {_city_world_name()} Founding Citizen: {founder_id}"
         elif lineage.get("type"):
-            values += f"\n{indent}- Agentopia Detroit Lineage: {lineage.get('type')}"
+            values += f"\n{indent}- {_city_world_name()} Lineage: {lineage.get('type')}"
         if origin.get("city"):
             place = ", ".join(str(x) for x in (origin.get("city"), origin.get("region"), origin.get("country")) if x)
             values += f"\n{indent}- Civic Origin: {place}"

@@ -31,6 +31,10 @@ BASE_CULTURE = {
 }
 
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+BASE_CULTURE = _city.get('cognitive.base_culture', _city.localize(BASE_CULTURE))
+
 def now() -> str:
     return datetime.now(timezone.utc).isoformat()
 
@@ -283,6 +287,7 @@ def build_institutions(factions: dict[str, dict[str, Any]], cyber: list[dict[str
         "Detroit Civic Core": {"type": "civic", "mission": "Maintain a functioning, resilient Detroit society."},
         "Detroit Infrastructure Council": {"type": "infrastructure", "mission": "Coordinate resilience across synthetic IT/OT sectors."},
     }
+    seeds = _city.localize(seeds)
     for name, rec in factions.items():
         seeds[name] = {"type": "faction", "mission": str(rec.get("doctrine") or rec.get("mission") or "Persistent faction memory")}
     for name, seed in seeds.items():
@@ -299,17 +304,17 @@ def build_institutions(factions: dict[str, dict[str, Any]], cyber: list[dict[str
         mem.append({"id": mid, "time": source.get("time"), "kind": kind, "summary": summary[:420]})
         del mem[:-200]
     for e in cyber[-30:]:
-        target = str(e.get("target") or "Detroit infrastructure")
+        target = str(e.get("target") or _city.localize_text("Detroit infrastructure"))
         threat = str(e.get("threat") or "cyber campaign").replace("_", " ")
         result = str(e.get("result") or "unknown")
         add("Obsidian Network", e, "operation", f"Operation against {target}: {threat}; result={result}; detected={bool(e.get('detected'))}.")
         add("ThAI Guardians", e, "threat_intelligence", f"Observed {threat} targeting {target}; result={result}; detection={bool(e.get('detected'))}.")
-        add("Detroit Infrastructure Council", e, "incident", f"Synthetic {threat} activity affected or tested {target}; outcome={result}.")
+        add(_city.localize_text("Detroit Infrastructure Council"), e, "incident", f"Synthetic {threat} activity affected or tested {target}; outcome={result}.")
     for a in audits[-30:]:
-        target = str(a.get("target") or "Detroit infrastructure")
+        target = str(a.get("target") or _city.localize_text("Detroit infrastructure"))
         improved = ", ".join(str(x) for x in (a.get("improved_controls") or []))
         add("ThAI Guardians", a, "purple_review", f"Purple-team review of {target}; improved controls: {improved or 'documented'}.")
-        add("Detroit Infrastructure Council", a, "resilience", f"Defensive review of {target}; controls improved: {improved or 'documented'}.")
+        add(_city.localize_text("Detroit Infrastructure Council"), a, "resilience", f"Defensive review of {target}; controls improved: {improved or 'documented'}.")
     out = {"version": VERSION, "updated_at": now(), "institutions": institutions}
     write_json(COG / "institutions.json", out)
     return out

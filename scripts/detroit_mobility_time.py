@@ -92,6 +92,59 @@ SECTOR_ZONE = {
     'Executive, Ownership & Finance':'Downtown',
 }
 
+# AGENTOPIA_CITY_PACK: a city pack (cities/<id>/city.json) can replace the
+# geography above. Detroit values remain the built-in defaults.
+import agentopia_city as _city
+ZONES = {k: tuple(v) for k, v in _city.get('mobility.zones', ZONES).items()}
+_CORRIDOR_RULES = _city.get('mobility.corridors', None)
+if _CORRIDOR_RULES:
+    def _corridor_test(conds):
+        def fn(a, b):
+            for c in conds:
+                for op, v in c.items():
+                    v = float(v)
+                    ok = {
+                        'abs_x_lt': lambda: abs(a[0]) < v and abs(b[0]) < v,
+                        'min_x_lt': lambda: min(a[0], b[0]) < v,
+                        'min_x_gt': lambda: min(a[0], b[0]) > v,
+                        'max_x_lt': lambda: max(a[0], b[0]) < v,
+                        'max_x_gt': lambda: max(a[0], b[0]) > v,
+                        'min_y_lt': lambda: min(a[1], b[1]) < v,
+                        'min_y_gt': lambda: min(a[1], b[1]) > v,
+                        'max_y_lt': lambda: max(a[1], b[1]) < v,
+                        'max_y_gt': lambda: max(a[1], b[1]) > v,
+                        'abs_dx_lt': lambda: abs(a[0] - b[0]) < v,
+                        'abs_dx_gt': lambda: abs(a[0] - b[0]) > v,
+                        'abs_dy_lt': lambda: abs(a[1] - b[1]) < v,
+                        'abs_dy_gt': lambda: abs(a[1] - b[1]) > v,
+                    }[op]()
+                    if not ok:
+                        return False
+            return True
+        return fn
+    CORRIDORS = [(r['name'], _corridor_test(r.get('when', []))) for r in _CORRIDOR_RULES]
+MODES = _city.get('mobility.modes', MODES)
+INSTITUTION_ZONE = _city.get('mobility.institution_zone', INSTITUTION_ZONE)
+SECTOR_ZONE = _city.get('mobility.sector_zone', SECTOR_ZONE)
+DISTANCE_SCALE = float(_city.get('mobility.distance_scale', 0.92))
+FALLBACK_CORRIDOR = _city.get('mobility.fallback_corridor', 'Detroit surface streets')
+WORK_KEYWORD_ZONE = _city.get('mobility.work_keyword_zone', [
+    ['guardian', 'Downtown'], ['obsidian', 'Michigan Central'], ['health', 'Midtown'], ['hospital', 'Midtown'],
+    ['university', 'Midtown'], ['college', 'Midtown'], ['restaurant', 'Eastern Market'], ['market', 'Eastern Market'],
+    ['manufactur', 'Michigan Central'], ['auto', 'Michigan Central'],
+])
+DEFAULT_WORK_ZONE = _city.get('mobility.default_work_zone', 'Downtown')
+DEFAULT_SCHOOL_ZONE = _city.get('mobility.default_school_zone', 'Midtown')
+K12_ZONE = _city.get('mobility.k12_zone', 'Detroit Public Learning Network')
+HOME_FALLBACK_ZONES = _city.get('mobility.home_fallback_zones', ['Midtown','Corktown','New Center','Eastern Market','Southwest Detroit','Rosedale Park','Jefferson-Chalmers','Warrendale'])
+LEISURE_ZONES = _city.get('mobility.leisure_zones', ['Downtown', 'Eastern Market'])
+ERRAND_ZONE = _city.get('mobility.errand_zone', 'Eastern Market')
+MODE_CHOICE = _city.get('mobility.mode_choice', {
+    'youth_transit': 'ddot_bus',
+    'rail': [{'mode': 'qline_rail', 'min_distance': 0.0, 'prob': 0.55, 'zones': ['Downtown', 'Midtown', 'New Center']}],
+    'bus': [['ddot_bus', 0.78], ['smart_bus', 0.22]],
+})
+
 POLICY = {
     'version':VERSION,
     'clock_model':'phase-derived 7-day city clock layered on Agentopia weekly phases',
@@ -160,7 +213,7 @@ def zone_xy(name:str)->tuple[float,float]:
     keys=sorted(ZONES);return ZONES[keys[int(hashlib.sha1(name.encode()).hexdigest()[:8],16)%len(keys)]]
 
 def distance_miles(a:str,b:str)->float:
-    ax,ay=zone_xy(a);bx,by=zone_xy(b);return max(0.2,math.hypot(ax-bx,ay-by)*0.92)
+    ax,ay=zone_xy(a);bx,by=zone_xy(b);return max(0.2,math.hypot(ax-bx,ay-by)*DISTANCE_SCALE)
 
 def corridor_for(a:str,b:str)->str:
     aa=zone_xy(a);bb=zone_xy(b)
@@ -168,7 +221,7 @@ def corridor_for(a:str,b:str)->str:
         try:
             if fn(aa,bb):return name
         except Exception:pass
-    return 'Detroit surface streets'
+    return FALLBACK_CORRIDOR
 
 def weather_for(year:int,week:int)->dict[str,Any]:
     # World Context v1.0.0 is the environmental authority when available.
@@ -210,20 +263,16 @@ def home_zone(name:str,hh:dict[str,Any],housing:dict[str,Any],byname:dict[str,st
     unit=housing.get(pid,{}) if pid else {}
     z=str(unit.get('neighborhood') or '')
     if z:return z
-    common=['Midtown','Corktown','New Center','Eastern Market','Southwest Detroit','Rosedale Park','Jefferson-Chalmers','Warrendale']
+    common=HOME_FALLBACK_ZONES
     return common[int(hashlib.sha1(name.encode()).hexdigest()[:8],16)%len(common)]
 
 def work_zone(name:str,career:dict[str,Any])->str:
     rec=career.get(name,{}) if isinstance(career,dict) else {};org=str(rec.get('organization') or '')
     low=org.lower()
-    if 'guardian' in low:return 'Downtown'
-    if 'obsidian' in low:return 'Michigan Central'
-    if 'health' in low or 'hospital' in low:return 'Midtown'
-    if 'university' in low or 'college' in low:return 'Midtown'
-    if 'restaurant' in low or 'market' in low:return 'Eastern Market'
-    if 'manufactur' in low or 'auto' in low:return 'Michigan Central'
+    for kw,zone in WORK_KEYWORD_ZONE:
+        if kw in low:return zone
     sec=str(rec.get('sector') or '')
-    return SECTOR_ZONE.get(sec,'Downtown')
+    return SECTOR_ZONE.get(sec,DEFAULT_WORK_ZONE)
 
 def school_zone(edu_rec:dict[str,Any])->str|None:
     e=edu_rec.get('active_enrollment') if isinstance(edu_rec,dict) else None
@@ -231,8 +280,8 @@ def school_zone(edu_rec:dict[str,Any])->str|None:
     iid=str(e.get('institution') or e.get('institution_id') or '')
     if iid in INSTITUTION_ZONE:return INSTITUTION_ZONE[iid]
     title=str(e.get('title') or '').lower()
-    if 'k-12' in title:return 'Detroit Public Learning Network'
-    return 'Midtown'
+    if 'k-12' in title:return K12_ZONE
+    return DEFAULT_SCHOOL_ZONE
 
 def age_for(name:str,health:dict[str,Any],year:int)->int:
     r=health.get(name,{}) if isinstance(health,dict) else {}
@@ -247,15 +296,21 @@ def choose_mode(name:str,home:str,dest:str,eclass:str,age:int,health_rec:dict[st
     d=distance_miles(home,dest);rng=stable_rng(name,year,week,'mode');physical=int(health_rec.get('physical_health',70) or 70)
     if d<=0.8 and physical>=45:return 'walk'
     if d<=2.4 and physical>=55 and rng.random()<0.38:return 'e_bike' if rng.random()<0.65 else 'bike'
-    if age<16:return 'ddot_bus' if d>1.2 else 'walk'
+    if age<16:return MODE_CHOICE['youth_transit'] if d>1.2 else 'walk'
     if vehicles:
         vt=str(vehicles[0].get('type') or '')
         if vt=='autonomous_ev':return 'autonomous_ev'
         if vt in {'compact_ev','utility_ev'}:return 'private_ev'
         return 'private_car'
-    if home in {'Downtown','Midtown','New Center'} and dest in {'Downtown','Midtown','New Center'} and rng.random()<0.55:return 'qline_rail'
+    for rule in MODE_CHOICE.get('rail',[]):
+        zs=set(rule.get('zones',[]))
+        if home in zs and dest in zs and d>=float(rule.get('min_distance',0)) and rng.random()<float(rule.get('prob',0.5)):return rule['mode']
     if eclass in {'affluent','wealthy','upper-middle'} and rng.random()<0.35:return 'ridehail'
-    return 'ddot_bus' if rng.random()<0.78 else 'smart_bus'
+    r=rng.random();acc=0.0
+    for mode,w in MODE_CHOICE['bus']:
+        acc+=float(w)
+        if r<acc:return mode
+    return MODE_CHOICE['bus'][-1][0]
 
 def vehicles_for_households(hh:dict[str,Any],housing:dict[str,Any],year:int,week:int)->dict[str,list[dict[str,Any]]]:
     old=read_json(VEHICLES_PATH,{'households':{}});out=old.get('households',{}) if isinstance(old,dict) else {}
@@ -313,11 +368,11 @@ def schedule_for(name:str,home:str,dest:str,school:str|None,mode:str,career_rec:
         if weekend:
             blocks=[{'start':'00:00','end':'08:00','activity':'sleep','location':home},{'start':'08:00','end':'11:00','activity':'home / personal','location':home},{'start':'11:00','end':'17:00','activity':'errands / social / recreation','location':home},{'start':'17:00','end':'23:59','activity':'family / leisure','location':home}]
             if day=='Saturday' and rng.random()<0.62:
-                leisure='Downtown' if rng.random()<0.5 else 'Eastern Market';trips.append(make_trip(name,day,'leisure',home,leisure,mode,'11:00',year,week,weather,congestion));trips.append(make_trip(name,day,'return',leisure,home,mode,'16:00',year,week,weather,congestion))
+                leisure=LEISURE_ZONES[0] if rng.random()<0.5 else LEISURE_ZONES[-1];trips.append(make_trip(name,day,'leisure',home,leisure,mode,'11:00',year,week,weather,congestion));trips.append(make_trip(name,day,'return',leisure,home,mode,'16:00',year,week,weather,congestion))
         elif status in {'retired','unemployed'} and not school:
             blocks=[{'start':'00:00','end':'07:30','activity':'sleep','location':home},{'start':'07:30','end':'12:00','activity':'home / job search / personal','location':home},{'start':'12:00','end':'17:30','activity':'errands / appointments / community','location':home},{'start':'17:30','end':'23:59','activity':'home / social','location':home}]
             if rng.random()<0.45:
-                err='Eastern Market';trips.append(make_trip(name,day,'errand',home,err,mode,'12:30',year,week,weather,congestion));trips.append(make_trip(name,day,'return',err,home,mode,'14:00',year,week,weather,congestion))
+                err=ERRAND_ZONE;trips.append(make_trip(name,day,'errand',home,err,mode,'12:30',year,week,weather,congestion));trips.append(make_trip(name,day,'return',err,home,mode,'14:00',year,week,weather,congestion))
         elif day in remote_days and not school:
             blocks=[{'start':'00:00','end':'06:45','activity':'sleep','location':home},{'start':'06:45','end':'08:00','activity':'morning routine','location':home},{'start':'08:00','end':'17:00','activity':'remote work','location':home},{'start':'17:00','end':'23:59','activity':'home / errands / social','location':home}]
         else:
@@ -431,7 +486,7 @@ def mobility_context(name:str)->str:
         '- Distance and travel time are real constraints. Consider commute time, traffic, transit availability, weather, schedule conflicts and fatigue when deciding where to go or what commitments to accept.',
     ]
     if incs:lines.append(f"- Recent mobility issue: {incs[-1].get('severity','incident')} on {incs[-1].get('corridor','Detroit route')}. Treat it as lived experience, not as a medical diagnosis.")
-    return '\n'.join(lines)
+    return _city.localize_text('\n'.join(lines))
 
 def apply_runtime_patches()->None:
     initialize()

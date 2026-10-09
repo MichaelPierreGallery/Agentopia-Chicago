@@ -53,6 +53,10 @@ TARGETS = [
     ("utilities", "Detroit Civic Utility Payment Hub"),
 ]
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+TARGETS = _city.localize(TARGETS)
+
 CRIME_METHODS = [
     "simulated credential-fraud campaign",
     "synthetic payment-diversion fraud",

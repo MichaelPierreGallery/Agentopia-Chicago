@@ -46,6 +46,13 @@ CITY_THEMES = [
 ]
 
 
+# AGENTOPIA_CITY_PACK: localize names / apply city overrides (Detroit = no-op).
+import agentopia_city as _city
+GUARDIAN_TOPICS = _city.localize(GUARDIAN_TOPICS)
+OBSIDIAN_TOPICS = _city.localize(OBSIDIAN_TOPICS)
+CITY_THEMES = _city.localize(CITY_THEMES)
+
+
 def _read_json(path: Path, default: Any) -> Any:
     try:
         return json.loads(path.read_text(encoding="utf-8")) if path.exists() else default

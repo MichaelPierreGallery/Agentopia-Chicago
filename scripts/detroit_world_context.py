@@ -18,7 +18,8 @@ SUMMARY_PATH = CTX / "summary.json"
 EVENTS_PATH = CTX / "events.ndjson"
 POLICY_PATH = CTX / "policy.json"
 PROFILE_LOCAL = WORLD / "world_context_profile.json"
-PROFILE_PUBLIC = ROOT / "research" / "world_context.detroit.json"
+import agentopia_city as _city  # AGENTOPIA_CITY_PACK
+PROFILE_PUBLIC = ROOT / "research" / f"world_context.{_city.CITY_ID}.json"
 PUBLIC_CALENDARS = ROOT / "research" / "culture_calendars"
 LOCAL_CALENDARS = CTX / "calendars"
 MEMBERSHIP_PATH = CTX / "citizen_communities.json"
@@ -74,6 +75,8 @@ CLIMATE_PROFILES = {
         },
     }
 }
+
+CLIMATE_PROFILES.update({k: {**v, "weather": {season: [tuple(r[:2]) + (tuple(r[2]),) + tuple(r[3:]) for r in rows] for season, rows in v["weather"].items()}} for k, v in _city.get("world_context.climate_profiles", {}).items()})
 
 
 def utc_now() -> str:
@@ -182,6 +185,9 @@ def load_profile() -> dict[str, Any]:
         p = read_json(PROFILE_PUBLIC, {})
     if not isinstance(p, dict):
         p = {}
+    for k, v in (_city.get("world_context", {}) or {}).items():
+        if k != "climate_profiles":
+            p.setdefault(k, v)
     p.setdefault("world_id", "detroit")
     p.setdefault("world_name", "Agentopia Detroit")
     p.setdefault("climate_profile", "detroit-temperate-north")

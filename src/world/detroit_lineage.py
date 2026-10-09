@@ -4,8 +4,16 @@ import json
 from pathlib import Path
 from typing import Any
 
-DOMESTIC = [('Chicago', 'Illinois'), ('Atlanta', 'Georgia'), ('Cleveland', 'Ohio'), ('Pittsburgh', 'Pennsylvania'), ('New York City', 'New York'), ('Boston', 'Massachusetts'), ('Baltimore', 'Maryland'), ('Washington', 'District of Columbia'), ('New Orleans', 'Louisiana'), ('Houston', 'Texas'), ('Dallas', 'Texas'), ('Austin', 'Texas'), ('Los Angeles', 'California'), ('San Francisco', 'California'), ('Seattle', 'Washington'), ('Portland', 'Oregon'), ('Phoenix', 'Arizona'), ('Denver', 'Colorado'), ('Minneapolis', 'Minnesota'), ('St. Louis', 'Missouri'), ('Nashville', 'Tennessee'), ('Miami', 'Florida'), ('Charlotte', 'North Carolina'), ('Philadelphia', 'Pennsylvania'), ('Milwaukee', 'Wisconsin')]
-INTERNATIONAL = [('Windsor', 'Canada'), ('Toronto', 'Canada'), ('Montreal', 'Canada'), ('Mexico City', 'Mexico'), ('Bogota', 'Colombia'), ('Sao Paulo', 'Brazil'), ('Lagos', 'Nigeria'), ('Accra', 'Ghana'), ('Nairobi', 'Kenya'), ('Cairo', 'Egypt'), ('Beirut', 'Lebanon'), ('Amman', 'Jordan'), ('London', 'United Kingdom'), ('Paris', 'France'), ('Berlin', 'Germany'), ('Warsaw', 'Poland'), ('Rome', 'Italy'), ('Madrid', 'Spain'), ('Mumbai', 'India'), ('Bengaluru', 'India'), ('Seoul', 'South Korea'), ('Tokyo', 'Japan'), ('Osaka', 'Japan'), ('Shanghai', 'China'), ('Singapore', 'Singapore'), ('Sydney', 'Australia')]
+from src import city_pack as _city
+
+_DETROIT_DOMESTIC = [('Chicago', 'Illinois'), ('Atlanta', 'Georgia'), ('Cleveland', 'Ohio'), ('Pittsburgh', 'Pennsylvania'), ('New York City', 'New York'), ('Boston', 'Massachusetts'), ('Baltimore', 'Maryland'), ('Washington', 'District of Columbia'), ('New Orleans', 'Louisiana'), ('Houston', 'Texas'), ('Dallas', 'Texas'), ('Austin', 'Texas'), ('Los Angeles', 'California'), ('San Francisco', 'California'), ('Seattle', 'Washington'), ('Portland', 'Oregon'), ('Phoenix', 'Arizona'), ('Denver', 'Colorado'), ('Minneapolis', 'Minnesota'), ('St. Louis', 'Missouri'), ('Nashville', 'Tennessee'), ('Miami', 'Florida'), ('Charlotte', 'North Carolina'), ('Philadelphia', 'Pennsylvania'), ('Milwaukee', 'Wisconsin')]
+_DETROIT_INTERNATIONAL = [('Windsor', 'Canada'), ('Toronto', 'Canada'), ('Montreal', 'Canada'), ('Mexico City', 'Mexico'), ('Bogota', 'Colombia'), ('Sao Paulo', 'Brazil'), ('Lagos', 'Nigeria'), ('Accra', 'Ghana'), ('Nairobi', 'Kenya'), ('Cairo', 'Egypt'), ('Beirut', 'Lebanon'), ('Amman', 'Jordan'), ('London', 'United Kingdom'), ('Paris', 'France'), ('Berlin', 'Germany'), ('Warsaw', 'Poland'), ('Rome', 'Italy'), ('Madrid', 'Spain'), ('Mumbai', 'India'), ('Bengaluru', 'India'), ('Seoul', 'South Korea'), ('Tokyo', 'Japan'), ('Osaka', 'Japan'), ('Shanghai', 'China'), ('Singapore', 'Singapore'), ('Sydney', 'Australia')]
+
+DOMESTIC = [tuple(x) for x in _city.get("lineage.domestic", _DETROIT_DOMESTIC)]
+INTERNATIONAL = [tuple(x) for x in _city.get("lineage.international", _DETROIT_INTERNATIONAL)]
+HOME_CITY = _city.get("lineage.home_city", "Detroit")
+HOME_REGION = _city.get("lineage.home_region", "Michigan")
+WORLD_NAME = _city.world_name()
 
 
 def _append(path: Path, row: dict[str, Any]) -> None:
@@ -35,22 +43,22 @@ def enrich_new_citizen_profile(engine: Any, profile: dict[str, Any], name: str, 
             "founder_names": [x.get("name") for x in picked],
             "generation": rng.randint(1, 4),
         }
-        origin = {"category":"founder_descendant", "city":"Detroit", "region":"Michigan", "country":"United States"}
-        note = f"{name} is a blood-line descendant of Agentopia Detroit Founding Citizen lineage: " + ", ".join(lineage["founder_names"]) + "."
+        origin = {"category":"founder_descendant", "city":HOME_CITY, "region":HOME_REGION, "country":"United States"}
+        note = f"{name} is a blood-line descendant of {WORLD_NAME} Founding Citizen lineage: " + ", ".join(lineage["founder_names"]) + "."
     elif roll < 0.80:
         city, region = rng.choice(DOMESTIC)
         lineage = {"type":"domestic_arrival", "founder_ids":[], "founder_names":[], "generation":None}
         origin = {"category":"domestic_arrival", "city":city, "region":region, "country":"United States"}
-        note = f"{name} moved to Agentopia Detroit from {city}, {region}."
+        note = f"{name} moved to {WORLD_NAME} from {city}, {region}."
     else:
         city, country = rng.choice(INTERNATIONAL)
         lineage = {"type":"international_arrival", "founder_ids":[], "founder_names":[], "generation":None}
         origin = {"category":"international_arrival", "city":city, "region":"", "country":country}
-        note = f"{name} moved to Agentopia Detroit from {city}, {country}."
+        note = f"{name} moved to {WORLD_NAME} from {city}, {country}."
     profile["lineage"] = lineage
     profile["origin"] = origin
     profile["world_role"] = "background_citizen"
     profile["brief_introduction"] = str(profile.get("brief_introduction") or "").rstrip() + " " + note
-    profile["details"] = "AGENTOPIA DETROIT ORIGIN: " + note + " " + str(profile.get("details") or "")
+    profile["details"] = f"{WORLD_NAME.upper()} ORIGIN: " + note + " " + str(profile.get("details") or "")
     _append(root / "detroit_lineage.jsonl", {"name": name, "lineage": lineage, "origin": origin, "serial": serial})
     return profile
