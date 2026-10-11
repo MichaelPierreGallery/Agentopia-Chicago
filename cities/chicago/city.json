@@ -1622,5 +1622,113 @@
       "digital sovereignty": 0.7,
       "lakefront and park life": 0.66
     }
+  },
+  "positions": {
+    "openings": [
+      {
+        "organization": "West Side Cyber Commons",
+        "role": "Junior SOC Analyst",
+        "type": "work",
+        "weekly_income": 380,
+        "min_age": 18,
+        "capacity": 2,
+        "description": "Watches the Commons' network dashboards, triages alerts and writes up incidents for neighborhood businesses and the city. Trains under senior analysts and mentors teen apprentices on the floor.",
+        "weekly_delta_skills": {
+          "cybersecurity": 0.5,
+          "incident_response": 0.3
+        }
+      },
+      {
+        "organization": "West Side Cyber Commons",
+        "role": "Youth Cyber Mentor",
+        "type": "work",
+        "weekly_income": 220,
+        "min_age": 18,
+        "capacity": 1,
+        "description": "Leads after-school cyber defense sessions where teens and elders train side by side. Plans exercises, checks on mentees and keeps the floor safe and welcoming.",
+        "weekly_delta_skills": {
+          "teaching": 0.4,
+          "cybersecurity": 0.2
+        }
+      },
+      {
+        "organization": "Medical District Community Clinic",
+        "role": "Patient Navigator",
+        "type": "work",
+        "weekly_income": 300,
+        "min_age": 18,
+        "capacity": 1,
+        "description": "Helps patients book visits, sort out insurance and find follow-up care in English and Spanish. The first friendly face in a busy waiting room.",
+        "weekly_delta_skills": {
+          "customer_service": 0.3,
+          "healthcare_navigation": 0.4
+        }
+      },
+      {
+        "organization": "Pulaski Road Branch Library",
+        "role": "Digital Skills Instructor",
+        "type": "work",
+        "weekly_income": 260,
+        "min_age": 18,
+        "capacity": 1,
+        "description": "Teaches evening classes on email, job applications, online safety and phone basics, mostly to seniors and job seekers.",
+        "weekly_delta_skills": {
+          "teaching": 0.4,
+          "public_speaking": 0.2
+        }
+      },
+      {
+        "organization": "Pullman Mobility & Logistics Institute",
+        "role": "Logistics Apprentice",
+        "type": "work",
+        "weekly_income": 260,
+        "min_age": 18,
+        "capacity": 2,
+        "description": "Paid apprenticeship in the freight yards learning dispatch, warehouse systems and autonomous-truck operations alongside classroom hours.",
+        "weekly_delta_skills": {
+          "logistics": 0.5,
+          "mechanical_repair": 0.2
+        }
+      },
+      {
+        "organization": "Fulton Market AI Works",
+        "role": "AI Operations Associate",
+        "type": "work",
+        "weekly_income": 450,
+        "min_age": 21,
+        "capacity": 1,
+        "description": "Monitors the small local models that run neighborhood services, tunes prompts and flags failures. Demanding work at a fast-growing company.",
+        "weekly_delta_skills": {
+          "programming": 0.3,
+          "data_analysis": 0.3
+        }
+      },
+      {
+        "organization": "Maxwell Street Market",
+        "role": "Market Stall Assistant",
+        "type": "work",
+        "weekly_income": 160,
+        "min_age": 16,
+        "capacity": 1,
+        "description": "Sets up, sells and breaks down a weekend vendor stall. Cash in hand, long Sundays and a crash course in bargaining.",
+        "weekly_delta_skills": {
+          "sales": 0.4,
+          "negotiation": 0.2
+        }
+      },
+      {
+        "organization": "Windy City Community College",
+        "role": "Student",
+        "type": "non-work",
+        "weekly_income": 120,
+        "min_age": 16,
+        "capacity": 2,
+        "description": "Full-time community college student working toward a certificate or transfer degree, supported by a small grant stipend.",
+        "weekly_delta_skills": {
+          "academic_research": 0.3,
+          "writing": 0.2
+        }
+      }
+    ]
   }
 }

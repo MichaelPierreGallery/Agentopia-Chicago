@@ -165,6 +165,16 @@ def main() -> None:
     (PERSISTENT / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=2), encoding="utf-8")
     (DATA / "active_city").write_text(city + "\n", encoding="utf-8")
 
+    # Jobs are built from the residents' profiles plus the pack's openings, so
+    # the engine never needs a one-shot god-model call to design them.
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    from build_city_positions import build_positions
+
+    openings = (pack.get("positions") or {}).get("openings") or []
+    payload = json.dumps({"positions": build_positions(PERSISTENT, openings)}, ensure_ascii=False, indent=2) + "\n"
+    for target in (base / "positions.json", PERSISTENT / "positions.json"):
+        target.write_text(payload, encoding="utf-8")
+
     n = len(list((PERSISTENT / "persona").iterdir()))
     print(f"[seed] {pack.get('world_name', city)} seeded: {n} founding residents")
     print(f"[seed] base world:       data/{city}/")
