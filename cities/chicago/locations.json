@@ -1,0 +1,185 @@
+{
+  "public": {
+    "Douglass Park Field House": {
+      "display_name": "Douglass Park Field House",
+      "size": "large",
+      "description": "A brick field house at the center of Douglass Park, a short walk from Douglass Park Commons. The main gym hosts pick-up basketball, youth leagues and community meetings under high windows and old wooden rafters. Side rooms hold a fitness corner, a craft room and a bulletin board crowded with flyers. In summer the doors stay open to the fields and the smell of cut grass drifts in.",
+      "objects": ["basketball hoops", "folding bleachers", "community bulletin board", "water fountain", "stack of folding chairs", "lost-and-found bin"]
+    },
+    "The Lagoon Path": {
+      "display_name": "The Lagoon Path",
+      "size": "medium",
+      "description": "A paved loop that winds around the park lagoon, shaded by old cottonwoods and elms. Joggers, dog walkers and elders on slow afternoon walks share the path. Benches face the water where geese gather, and a small footbridge crosses the narrow end. It is the quietest place in the neighborhood at dawn.",
+      "objects": ["park benches", "footbridge", "trash cans", "fishing pier", "distance markers", "bike rack"]
+    },
+    "Ogden Corner Coffee": {
+      "display_name": "Ogden Corner Coffee",
+      "size": "small",
+      "description": "A narrow coffee shop on Ogden Avenue that most residents treat as the building's second living room. A long counter runs along one wall and mismatched tables fill the front window. The owner knows everyone's order and keeps a shelf of neighborhood books to borrow. On cold mornings the windows fog over and the line runs out the door.",
+      "objects": ["espresso machine", "pastry case", "lending bookshelf", "window counter", "chalkboard menu", "tip jar"]
+    },
+    "West Side Cyber Commons": {
+      "display_name": "West Side Cyber Commons",
+      "size": "large",
+      "description": "A converted warehouse on the West Side where teens and elders train side by side in cyber defense. The main floor is an open lab of workstations facing a wall of live network dashboards. Glass-walled rooms along the side host classes, tabletop exercises and mentoring sessions. A banner over the entrance reads that every generation defends the city together.",
+      "objects": ["rows of workstations", "network dashboard wall", "whiteboards", "server rack", "training lab badges", "coffee station"]
+    },
+    "Pulaski Road Branch Library": {
+      "display_name": "Pulaski Road Branch Library",
+      "size": "medium",
+      "description": "A neighborhood public library with tall front windows and a busy computer area. The children's section has low shelves and a reading rug, while adults study at long tables near the back. Free classes on job searching, digital skills and taxes run most weeknights. It is warm in winter and cool in summer, so it is never empty.",
+      "objects": ["public computers", "reading tables", "children's reading rug", "printer station", "new-arrivals shelf", "events calendar"]
+    },
+    "Ogden Avenue Laundromat": {
+      "display_name": "Ogden Avenue Laundromat",
+      "size": "small",
+      "description": "A bright laundromat with rows of washers on one side and dryers on the other. Plastic chairs line the front window, and a TV in the corner plays the news with the sound low. Neighbors trade gossip while folding and kids do homework on the folding tables. A corkboard by the door advertises rooms for rent and side jobs.",
+      "objects": ["washers", "dryers", "folding tables", "plastic chairs", "change machine", "corkboard"]
+    },
+    "Pink Line Platform": {
+      "display_name": "Pink Line Platform",
+      "size": "medium",
+      "description": "An elevated 'L' platform a few blocks from Douglass Park Commons, about twenty minutes to the Loop on a good day. Heat lamps glow orange over the waiting area in winter. Commuters lean on the railing to watch the train come around the curve. The view east shows the skyline rising above rooftops and church steeples.",
+      "objects": ["fare turnstiles", "heat lamps", "train arrival screen", "benches", "route map", "railing"]
+    },
+    "Lawndale Corner Store": {
+      "display_name": "Lawndale Corner Store",
+      "size": "small",
+      "description": "A family-run corner store that sells a bit of everything, from groceries to phone chargers. Narrow aisles are packed floor to ceiling and the counter is protected by a scratched plexiglass window. The owner keeps a running tab for regulars who are short before payday. Fresh fruit by the door is a recent addition the neighborhood fought for.",
+      "objects": ["snack aisle", "cooler of drinks", "fruit stand", "lottery counter", "phone charger rack", "handwritten price signs"]
+    },
+    "Greystone Barbershop": {
+      "display_name": "Greystone Barbershop",
+      "size": "small",
+      "description": "A barbershop on the ground floor of an old greystone, with three chairs and a long mirror. It is the neighborhood's informal town hall, where debates about sports, politics and rent run all day. Photos of customers' graduations and weddings cover one wall. A radio plays old soul and house music from the back.",
+      "objects": ["barber chairs", "wall mirror", "photo wall", "radio", "waiting bench", "clippers station"]
+    },
+    "Medical District Community Clinic": {
+      "display_name": "Medical District Community Clinic",
+      "size": "medium",
+      "description": "A busy community health clinic at the edge of the Medical District. The waiting room is clean but crowded, with signs in English, Spanish and Polish. Nurses move quickly between exam rooms while a front desk handles appointments and insurance questions. A small pharmacy window and a health education corner sit near the exit.",
+      "objects": ["waiting room chairs", "check-in kiosk", "exam rooms", "pharmacy window", "health pamphlet rack", "blood pressure station"]
+    },
+    "Maxwell Street Market": {
+      "display_name": "Maxwell Street Market",
+      "size": "large",
+      "description": "A sprawling open-air Sunday market of vendor stalls, food trucks and live music. Tables sell tools, used electronics, clothes, records and street food from a dozen cultures. Blues musicians play at one end while families line up for tacos at the other. Bargaining is expected and half the fun.",
+      "objects": ["vendor stalls", "food trucks", "used electronics table", "record crates", "music stage", "string lights"]
+    },
+    "Pilsen Taqueria": {
+      "display_name": "Pilsen Taqueria",
+      "size": "small",
+      "description": "A small taqueria with bright murals on its outside wall and a counter facing an open kitchen. The menu is painted above the grill and the line moves fast at lunch. Tables are shared, so strangers often end up talking. Late at night it is one of the few places still open.",
+      "objects": ["open grill", "painted menu board", "shared tables", "salsa bar", "horchata dispenser", "mural wall"]
+    },
+    "Riverwalk Benches": {
+      "display_name": "Riverwalk Benches",
+      "size": "medium",
+      "description": "A stretch of the downtown Riverwalk lined with stone steps and benches along the Chicago River. Office workers eat lunch here while tour boats and kayaks pass below. Bridges open and close overhead, and the towers of the Loop rise on both banks. In the evening it turns into a slow promenade.",
+      "objects": ["stone steps", "benches", "river railing", "bridge tender house", "kayak launch", "lamp posts"]
+    },
+    "Lakefront Trail at 31st Street": {
+      "display_name": "Lakefront Trail at 31st Street",
+      "size": "large",
+      "description": "A wide stretch of the lakefront trail where the path meets a small beach and harbor. Cyclists, runners and skaters stream past with Lake Michigan on one side and the skyline on the other. Families picnic on the grass while fishermen sit on the rocks. When the wind comes off the lake it can feel ten degrees colder than downtown.",
+      "objects": ["bike lanes", "beach", "harbor rocks", "picnic tables", "water fountain", "skyline view"]
+    },
+    "Loop Coworking Hall": {
+      "display_name": "Loop Coworking Hall",
+      "size": "medium",
+      "description": "A coworking floor in an old Loop office building with tall windows and exposed ductwork. Freelancers, startup teams and remote workers fill rows of hot desks. Phone booths line one wall and a kitchen serves free coffee all day. The 'L' rumbles past outside every few minutes.",
+      "objects": ["hot desks", "phone booths", "shared kitchen", "projector screen", "lockers", "standing desks"]
+    },
+    "Fulton Market Food Hall": {
+      "display_name": "Fulton Market Food Hall",
+      "size": "medium",
+      "description": "A food hall in a converted meatpacking warehouse, with brick walls and steel beams overhead. A dozen counters serve everything from noodles to barbecue around a central seating area. Tech workers from nearby offices crowd in at lunch. At night the lights dim and it fills with groups out for drinks.",
+      "objects": ["food counters", "communal tables", "bar", "steel beams", "order screens", "trash and recycling station"]
+    },
+    "Bronzeville Jazz Club": {
+      "display_name": "Bronzeville Jazz Club",
+      "size": "small",
+      "description": "An intimate club with low lighting, red booths and a small stage in the corner. Photos of the neighborhood's music legends hang along the walls. Local trios play most nights and the Sunday jam session draws musicians from across the city. The crowd is a mix of longtime regulars and curious newcomers.",
+      "objects": ["small stage", "red booths", "upright piano", "bar", "music legend photos", "candle lamps"]
+    },
+    "Logan Square Farmers Market": {
+      "display_name": "Logan Square Farmers Market",
+      "size": "medium",
+      "description": "A weekend market that fills a boulevard plaza with farm stands, bakers and flower sellers. Neighbors carry tote bags from stall to stall and dogs nose around under the tables. A small acoustic act plays near the monument at the center. In winter it moves into an old church hall nearby.",
+      "objects": ["farm stands", "flower buckets", "bread table", "tote bags", "acoustic stage", "price chalkboards"]
+    },
+    "Hyde Park Bookstore": {
+      "display_name": "Hyde Park Bookstore",
+      "size": "small",
+      "description": "A cramped, much-loved used and new bookstore near the university campus. Shelves run to the ceiling with ladders to reach the top, and stacks sit on the floor in every aisle. Students and professors argue quietly in the philosophy section. A reading nook by the window has the best afternoon light in the neighborhood.",
+      "objects": ["rolling ladders", "floor-to-ceiling shelves", "reading nook", "used-book cart", "staff picks table", "cash register"]
+    },
+    "Austin Community Garden": {
+      "display_name": "Austin Community Garden",
+      "size": "small",
+      "description": "A fenced community garden on a former vacant lot, divided into raised beds that neighbors tend. Collard greens, tomatoes and peppers grow beside sunflowers. A tool shed and rain barrels sit in the corner, and a picnic table hosts potlucks at harvest. Elders teach kids how to plant and when to pick.",
+      "objects": ["raised garden beds", "tool shed", "rain barrels", "picnic table", "compost bin", "watering cans"]
+    },
+    "Garfield Park Conservatory": {
+      "display_name": "Garfield Park Conservatory",
+      "size": "large",
+      "description": "A huge glass conservatory filled with palms, ferns and desert plants, warm and humid even in the dead of winter. Winding paths lead through rooms of different climates and past a koi pond. School groups sketch plants while couples walk slowly through the fern room. It is one of the city's best free escapes in February.",
+      "objects": ["palm trees", "koi pond", "fern room", "cactus garden", "glass dome", "visitor map"]
+    },
+    "City Hall Service Center": {
+      "display_name": "City Hall Service Center",
+      "size": "medium",
+      "description": "A ground-floor public service center where residents handle permits, licenses, fines and benefits. Numbered tickets and screens manage the line, and staff work behind long counters. A digital-services desk helps people who struggle with the city's online systems. The mood ranges from patient to frustrated depending on the wait.",
+      "objects": ["ticket dispenser", "service counters", "waiting screens", "digital-services desk", "forms rack", "security checkpoint"]
+    },
+    "Chinatown Square Tea House": {
+      "display_name": "Chinatown Square Tea House",
+      "size": "small",
+      "description": "A quiet tea house on the plaza with round tables and a wall of tea tins. Elders play cards and mahjong in the back while younger customers study with bubble tea. Steam rises from dumpling baskets carried out of the kitchen. Red lanterns hang over the doorway.",
+      "objects": ["tea tin wall", "round tables", "mahjong table", "dumpling baskets", "red lanterns", "teapots"]
+    },
+    "Bridgeport Union Hall": {
+      "display_name": "Bridgeport Union Hall",
+      "size": "medium",
+      "description": "A trades union hall with a meeting room, a training shop and a small bar in the basement. Apprentices practice welding and electrical work in the shop while members meet upstairs. Framed photos of past strikes and union picnics line the hallway. It is a place where the city's skilled trades pass work and knowledge along.",
+      "objects": ["training shop", "welding booths", "meeting podium", "framed union photos", "job board", "basement bar"]
+    },
+    "Humboldt Park Boathouse": {
+      "display_name": "Humboldt Park Boathouse",
+      "size": "small",
+      "description": "A historic boathouse on the park lagoon with arched windows and a wide terrace. In summer it rents paddleboats and hosts music nights on the terrace. Families gather here during the neighborhood's cultural festivals. Flags and murals in the surrounding blocks give the area its proud identity.",
+      "objects": ["paddleboats", "terrace", "arched windows", "event chairs", "lagoon dock", "festival flags"]
+    },
+    "South Shore Cultural Center Lawn": {
+      "display_name": "South Shore Cultural Center Lawn",
+      "size": "medium",
+      "description": "A grand old lakeside clubhouse turned public cultural center, with a sweeping lawn down to the beach. Weddings, art classes and summer concerts all happen here. The lawn is a favorite place to watch the sunrise over the lake. Inside, ballrooms with chandeliers host community events and graduations.",
+      "objects": ["sweeping lawn", "beach access", "ballroom chandeliers", "concert stage", "art studio", "garden paths"]
+    },
+    "Uptown Music Venue": {
+      "display_name": "Uptown Music Venue",
+      "size": "medium",
+      "description": "An old theater turned music venue, with a worn velvet balcony and a standing floor in front of the stage. Touring bands, local DJs and poetry slams share the calendar. The lobby has a bar under an ornate painted ceiling. Lines stretch down the block on big nights.",
+      "objects": ["stage", "velvet balcony", "lobby bar", "painted ceiling", "merch table", "sound booth"]
+    },
+    "Englewood Youth Center": {
+      "display_name": "Englewood Youth Center",
+      "size": "small",
+      "description": "A youth center in a renovated storefront offering tutoring, coding clubs and a recording booth. Couches and beanbags fill the front room, and laptops line a long table in the back. Mentors check homework and help teens apply for jobs and scholarships. Its walls are covered in art the kids made themselves.",
+      "objects": ["tutoring tables", "laptops", "recording booth", "beanbag chairs", "student art wall", "snack shelf"]
+    },
+    "Pullman Logistics Yard Cafe": {
+      "display_name": "Pullman Logistics Yard Cafe",
+      "size": "small",
+      "description": "A small diner beside the far South Side freight and logistics yards, open before dawn for shift workers. Truck drivers, warehouse staff and rail workers fill the counter stools. The menu is cheap, the coffee is strong and the portions are large. Through the window you can see autonomous freight trucks lining up at the gates.",
+      "objects": ["counter stools", "griddle", "coffee urns", "shift schedule board", "booth seats", "window onto the yard"]
+    },
+    "Lawndale Neighborhood Church Hall": {
+      "display_name": "Lawndale Neighborhood Church Hall",
+      "size": "medium",
+      "description": "The basement hall of a historic neighborhood church that doubles as a food pantry, polling place and meeting room. Long tables are set up for community dinners on Wednesdays and senior lunches on Saturdays. A piano sits in the corner for choir practice. Organizers have planned voter drives and housing campaigns here for generations.",
+      "objects": ["long dinner tables", "food pantry shelves", "piano", "coffee urn", "voter registration table", "folding chairs"]
+    }
+  },
+  "private": {}
+}

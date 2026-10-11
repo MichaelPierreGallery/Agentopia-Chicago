@@ -89,6 +89,12 @@ def build_base_world(city: str, pack: dict, max_personas: int | None) -> Path:
     worldview = ROOT / "cities" / city / "worldview.json"
     shutil.copy2(worldview if worldview.exists() else base_src / "worldview.json", dst / "worldview.json")
 
+    # A curated public map skips the one-shot 30-location LLM call, which
+    # small strategy models cannot finish inside their output-token budget.
+    locations = ROOT / "cities" / city / "locations.json"
+    if locations.exists():
+        shutil.copy2(locations, dst / "locations.json")
+
     history = pack.get("history")
     if history:
         (dst / "detroit_history.json").write_text(json.dumps(history, ensure_ascii=False, indent=2), encoding="utf-8")
