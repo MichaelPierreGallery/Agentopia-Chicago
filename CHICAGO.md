@@ -44,6 +44,18 @@ For a lighter machine: `AGENTOPIA_PROFILE=light bash scripts/start_detroit_llama
 
 To switch back to Detroit, delete `data/active_city` or set `AGENTOPIA_CITY=detroit`.
 
+## City View: every resident on an isometric map
+
+Open **http://127.0.0.1:8766/city.html**, or click **City View** on the dashboard.
+
+- The city is drawn in isometric view: lakefront, river, expressways, the 'L' and Metra lines, the Loop skyline, and neighborhood blocks. Snow shows in winter.
+- Every resident is placed from the engine's own reported weekly schedule and trips. People commute along the 'L' lines or the street grid, and are colored by what they're doing.
+- Click any resident, or search by name, to see what they're doing, their destination and ETA, home, work, wellbeing and today's schedule. **Follow** keeps the camera on them.
+- The time bar replays the reported week. **Engine clock** jumps to the simulation's current phase-derived time.
+- Read-only by design. `GET /api/city/scene` (`live_world/city_scene.py`) projects persisted engine state and never writes it.
+
+`seed_city_world.py` now runs the engine's no-LLM initializers (careers, housing, health, schedules, weather), so the City View has residents before the first model run.
+
 ## Make your own city
 
 Copy `cities/chicago/` to `cities/<id>/`, then edit `city.json` and `worldview.json`. Then run `python scripts/seed_city_world.py --city <id>`. Every key is optional; anything you leave out falls back to Detroit.

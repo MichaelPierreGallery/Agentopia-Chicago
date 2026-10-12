@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 
+import os
 from pathlib import Path
 import json
 import re
 import sys
 
-ROOT = Path.home() / "AI" / "Agentopia"
+ROOT = Path(os.environ.get("AGENTOPIA_HOME", str(Path(__file__).resolve().parents[1]))).expanduser()
 WORLD = ROOT / "data" / "detroit_persistent"
 
 # These are CURRENT-STATE violations when used as a person's

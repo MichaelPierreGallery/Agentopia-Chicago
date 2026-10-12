@@ -920,7 +920,8 @@
         4,
         230
       ]
-    ]
+    ],
+    "property_prefix": "CHI"
   },
   "education": {
     "institution_names": {
@@ -1466,7 +1467,7 @@
   "seed": {
     "base_world": "apartment",
     "building_name": "Douglass Park Commons",
-    "persona_preamble": "AGENTOPIA CHICAGO ORIGIN: You are a founding resident of Douglass Park Commons in North Lawndale, Chicago, in 2045. Any earlier life described below is your backstory.",
+    "persona_preamble": "AGENTOPIA CHICAGO ORIGIN: You are one of the founding residents of Agentopia Chicago in 2045. Your current neighborhood and home come from the city's housing records; Douglass Park Commons in North Lawndale is where the founding residents first met. Any earlier life described below is your backstory.",
     "persona_rewrites": [
       [
         "Bremer Apartment",
@@ -1729,6 +1730,334 @@
           "writing": 0.2
         }
       }
+    ]
+  },
+  "transit_lines": {
+    "note": "Schematic only: stations are neighborhood anchors, not real stop locations.",
+    "lines": [
+      {
+        "id": "red",
+        "name": "Red Line",
+        "color": "#c60c30",
+        "mode": "cta_l",
+        "stops": [
+          "Rogers Park",
+          "Uptown",
+          "Lakeview",
+          "Lincoln Park",
+          "River North",
+          "The Loop",
+          "South Loop",
+          "Chinatown",
+          "Bronzeville",
+          "Chatham"
+        ]
+      },
+      {
+        "id": "blue",
+        "name": "Blue Line",
+        "color": "#00a1de",
+        "mode": "cta_l",
+        "stops": [
+          "O'Hare",
+          "Portage Park",
+          "Logan Square",
+          "Wicker Park",
+          "The Loop",
+          "Medical District",
+          "Garfield Park"
+        ]
+      },
+      {
+        "id": "brown",
+        "name": "Brown Line",
+        "color": "#62361b",
+        "mode": "cta_l",
+        "stops": [
+          "Albany Park",
+          "Lakeview",
+          "Lincoln Park",
+          "River North",
+          "The Loop"
+        ]
+      },
+      {
+        "id": "green",
+        "name": "Green Line",
+        "color": "#009b3a",
+        "mode": "cta_l",
+        "stops": [
+          "Austin",
+          "Garfield Park",
+          "Fulton Market",
+          "The Loop",
+          "South Loop",
+          "Bronzeville",
+          "Woodlawn"
+        ]
+      },
+      {
+        "id": "pink",
+        "name": "Pink Line",
+        "color": "#e27ea6",
+        "mode": "cta_l",
+        "stops": [
+          "The Loop",
+          "West Loop",
+          "Medical District",
+          "Pilsen",
+          "Little Village",
+          "North Lawndale"
+        ]
+      },
+      {
+        "id": "orange",
+        "name": "Orange Line",
+        "color": "#f9461c",
+        "mode": "cta_l",
+        "stops": [
+          "The Loop",
+          "Chinatown",
+          "Bridgeport",
+          "Midway"
+        ]
+      },
+      {
+        "id": "metra-electric",
+        "name": "Metra Electric",
+        "color": "#5b6770",
+        "mode": "metra",
+        "stops": [
+          "The Loop",
+          "South Loop",
+          "Hyde Park",
+          "South Shore",
+          "Pullman"
+        ]
+      }
+    ]
+  },
+  "map": {
+    "note": "Schematic shoreline and river for the city viewer; abstract miles from the Loop.",
+    "shoreline": [
+      [
+        -0.4,
+        10.0
+      ],
+      [
+        -0.3,
+        9.3
+      ],
+      [
+        0.1,
+        6.8
+      ],
+      [
+        0.3,
+        5.0
+      ],
+      [
+        0.5,
+        3.0
+      ],
+      [
+        0.9,
+        1.8
+      ],
+      [
+        1.5,
+        0.9
+      ],
+      [
+        1.1,
+        0.3
+      ],
+      [
+        1.1,
+        -1.3
+      ],
+      [
+        1.4,
+        -4.0
+      ],
+      [
+        2.3,
+        -7.0
+      ],
+      [
+        2.4,
+        -8.3
+      ],
+      [
+        3.7,
+        -9.0
+      ],
+      [
+        4.6,
+        -10.5
+      ],
+      [
+        5.6,
+        -14.5
+      ]
+    ],
+    "river": [
+      [
+        [
+          1.1,
+          0.35
+        ],
+        [
+          -0.6,
+          0.35
+        ],
+        [
+          -1.0,
+          1.0
+        ],
+        [
+          -1.3,
+          1.6
+        ],
+        [
+          -1.6,
+          2.6
+        ],
+        [
+          -2.6,
+          4.5
+        ],
+        [
+          -3.6,
+          6.5
+        ],
+        [
+          -4.4,
+          8.5
+        ]
+      ],
+      [
+        [
+          -0.6,
+          0.35
+        ],
+        [
+          -0.6,
+          -1.4
+        ],
+        [
+          -1.4,
+          -2.6
+        ],
+        [
+          -2.6,
+          -3.2
+        ],
+        [
+          -4.6,
+          -3.6
+        ],
+        [
+          -7.0,
+          -4.6
+        ]
+      ]
+    ],
+    "parks": [
+      {
+        "name": "Lincoln Park",
+        "at": [
+          0.1,
+          2.9
+        ],
+        "r": [
+          0.35,
+          1.5
+        ]
+      },
+      {
+        "name": "Grant Park",
+        "at": [
+          0.7,
+          -0.3
+        ],
+        "r": [
+          0.3,
+          0.8
+        ]
+      },
+      {
+        "name": "Douglass Park",
+        "at": [
+          -4.3,
+          -1.6
+        ],
+        "r": [
+          0.35,
+          0.3
+        ]
+      },
+      {
+        "name": "Garfield Park",
+        "at": [
+          -4.4,
+          0.1
+        ],
+        "r": [
+          0.35,
+          0.3
+        ]
+      },
+      {
+        "name": "Humboldt Park",
+        "at": [
+          -4.4,
+          1.4
+        ],
+        "r": [
+          0.35,
+          0.35
+        ]
+      },
+      {
+        "name": "Washington Park",
+        "at": [
+          0.4,
+          -6.3
+        ],
+        "r": [
+          0.45,
+          0.5
+        ]
+      },
+      {
+        "name": "Jackson Park",
+        "at": [
+          1.9,
+          -7.6
+        ],
+        "r": [
+          0.45,
+          0.7
+        ]
+      },
+      {
+        "name": "Marquette Park",
+        "at": [
+          -3.6,
+          -8.8
+        ],
+        "r": [
+          0.4,
+          0.35
+        ]
+      }
+    ],
+    "bounds": [
+      -15.0,
+      -15.0,
+      6.0,
+      10.5
     ]
   }
 }

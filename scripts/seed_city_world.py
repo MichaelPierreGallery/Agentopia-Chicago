@@ -138,6 +138,32 @@ def build_config(city: str, start_year: int, language: str) -> dict:
     return cfg
 
 
+def init_engine_state(city: str) -> None:
+    """Run the engine's own deterministic initializers (no LLM calls) so careers,
+    households, health, schedules and weather exist before the first model run.
+    The City View reads these; the engine keeps them authoritative afterwards."""
+    import importlib
+    import os
+    os.environ["AGENTOPIA_CITY"] = city
+    for p in (str(ROOT), str(ROOT / "scripts")):
+        if p not in sys.path:
+            sys.path.insert(0, p)
+    steps = ["detroit_financial_system", "detroit_career_economy", "detroit_human_economy",
+             "detroit_business_economy", "detroit_education_skills", "detroit_healthcare",
+             "detroit_mobility_time"]
+    for name in steps:
+        try:
+            importlib.import_module(name).initialize()
+            print(f"[seed] init {name.replace('detroit_', '')}: ok")
+        except Exception as exc:  # keep seeding usable even if one subsystem fails
+            print(f"[seed] init {name.replace('detroit_', '')}: skipped ({type(exc).__name__}: {exc})")
+    try:
+        importlib.import_module("detroit_world_context").refresh()
+        print("[seed] init world_context: ok")
+    except Exception as exc:
+        print(f"[seed] init world_context: skipped ({exc})")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--city", required=True, help="city pack id, e.g. chicago")
@@ -145,6 +171,7 @@ def main() -> None:
     ap.add_argument("--language", default="en")
     ap.add_argument("--max-personas", type=int, default=None, help="limit starter personas (smaller first run)")
     ap.add_argument("--force", action="store_true", help="back up and replace an existing persistent world")
+    ap.add_argument("--no-init", action="store_true", help="skip the deterministic (no-LLM) economy/mobility bootstrap")
     args = ap.parse_args()
     city = args.city.strip().lower()
     pack = load_pack(city)
@@ -174,6 +201,8 @@ def main() -> None:
     payload = json.dumps({"positions": build_positions(PERSISTENT, openings)}, ensure_ascii=False, indent=2) + "\n"
     for target in (base / "positions.json", PERSISTENT / "positions.json"):
         target.write_text(payload, encoding="utf-8")
+    if not args.no_init:
+        init_engine_state(city)
 
     n = len(list((PERSISTENT / "persona").iterdir()))
     print(f"[seed] {pack.get('world_name', city)} seeded: {n} founding residents")
