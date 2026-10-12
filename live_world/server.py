@@ -1220,6 +1220,15 @@ class AppHandler(BaseHTTPRequestHandler):
             except Exception as exc:
                 self.send_json({"ok": False, "error": str(exc)}, 500)
             return
+        # AGENTOPIA_CITY_SCENE_V1: read-only scene for the isometric City View.
+        if parsed.path == "/api/city/scene":
+            try:
+                sys.path.insert(0, str(Path(__file__).resolve().parent))
+                import city_scene
+                self.send_json(city_scene.build_scene(self.app.reader.root))
+            except Exception as exc:
+                self.send_json({"ok": False, "error": f"{type(exc).__name__}: {exc}"}, 500)
+            return
         if parsed.path == "/api/runs":
             self.send_json({"ok": True, "runs": self.app.reader.runs()})
             return

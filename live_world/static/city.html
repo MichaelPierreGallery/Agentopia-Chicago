@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Agentopia City View</title>
+<style>
+:root{
+  --bg:#0b1220; --panel:rgba(12,20,36,.86); --panel-solid:#0f1a2e; --line:rgba(148,178,220,.18);
+  --text:#e8eef8; --muted:#93a4bf; --accent:#3d8bff; --accent-2:#5fd0ff;
+  --home:#f2b544; --work:#4c8dff; --study:#a46cff; --out:#2fbf71; --transit:#ff6b6b;
+  --radius:14px; --shadow:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--text);font:14px/1.4 "Inter",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;overflow:hidden}
+canvas#view{position:fixed;inset:0;width:100vw;height:100vh;display:block;cursor:grab;touch-action:none}
+canvas#view.dragging{cursor:grabbing}
+.panel{position:fixed;background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+header.top{top:12px;left:12px;right:12px;display:flex;align-items:stretch;gap:10px;padding:10px 12px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;justify-content:center;padding-right:14px;border-right:1px solid var(--line);min-width:220px}
+.brand h1{margin:0;font-size:22px;letter-spacing:.04em;font-weight:900;line-height:1}
+.brand h1 b{color:var(--accent-2)}
+.brand small{color:var(--muted);letter-spacing:.18em;font-size:10px;text-transform:uppercase;margin-top:5px}
+.card{display:flex;align-items:center;gap:10px;padding:2px 12px;border-right:1px solid var(--line)}
+.card:last-of-type{border-right:0}
+.card .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.card .v{font-weight:700;font-size:15px}
+.wx{font-size:22px}
+.spacer{flex:1}
+.btn{appearance:none;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);border-radius:10px;padding:8px 12px;font:inherit;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.btn:hover{background:rgba(255,255,255,.09)}
+.btn.primary{background:var(--accent);border-color:transparent}
+.btn.primary:hover{filter:brightness(1.1)}
+.btn.on{background:rgba(61,139,255,.22);border-color:rgba(61,139,255,.6)}
+nav.rail{top:96px;left:12px;width:208px;padding:10px;display:flex;flex-direction:column;gap:6px}
+nav.rail h3,aside h3{margin:6px 4px 2px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+nav.rail .btn{justify-content:flex-start}
+.search{position:relative}
+.search input{width:100%;padding:9px 10px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.25);color:var(--text);font:inherit}
+.results{position:absolute;left:0;right:0;top:40px;background:var(--panel-solid);border:1px solid var(--line);border-radius:10px;max-height:260px;overflow:auto;z-index:5;display:none}
+.results button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--text);padding:8px 10px;font:inherit;cursor:pointer}
+.results button:hover{background:rgba(255,255,255,.07)}
+.results small{color:var(--muted)}
+aside.inspector{top:96px;right:12px;width:320px;max-height:calc(100vh - 280px);overflow:auto;padding:14px;display:none}
+aside.inspector.show{display:block}
+.who{display:flex;gap:12px;align-items:center}
+.avatar{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;font-weight:900;font-size:20px;color:#0b1220;flex:none}
+.who h2{margin:0;font-size:18px}
+.who p{margin:2px 0 0;color:var(--muted);font-size:12.5px}
+.close{margin-left:auto;align-self:flex-start;background:none;border:0;color:var(--muted);font-size:20px;cursor:pointer}
+.facts{display:grid;gap:8px;margin:12px 0}
+.fact{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;background:rgba(255,255,255,.04)}
+.fact .k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.fact .v{font-weight:650}
+.dot{width:10px;height:10px;border-radius:50%;flex:none;margin-top:5px}
+.bars{display:grid;gap:7px;margin-top:6px}
+.bar{display:grid;grid-template-columns:86px 1fr 34px;gap:8px;align-items:center;font-size:12.5px}
+.bar i{display:block;height:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i b{display:block;height:100%;border-radius:5px}
+.bar span:last-child{color:var(--muted);text-align:right}
+.timeline{display:grid;gap:4px;margin-top:6px}
+.tl{display:grid;grid-template-columns:92px 1fr;gap:8px;font-size:12.5px;padding:5px 8px;border-radius:8px}
+.tl.now{background:rgba(61,139,255,.18)}
+.tl .t{color:var(--muted);font-variant-numeric:tabular-nums}
+.intro{color:var(--muted);font-size:12.5px;margin-top:10px}
+.mini{left:12px;bottom:12px;width:236px;padding:10px}
+.mini canvas{width:100%;height:170px;display:block;border-radius:10px;background:#0a2742;cursor:pointer}
+.mini h3{margin:0 0 6px;font-size:12px;display:flex;justify-content:space-between}
+.timebar{left:260px;right:340px;bottom:12px;padding:10px 14px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.timebar input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+.days{display:flex;gap:4px}
+.days button{padding:6px 8px;border-radius:8px;font-size:12px}
+.mode-badge{font-size:11px;padding:4px 8px;border-radius:999px;background:rgba(255,107,107,.18);color:#ffb3b3;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.mode-badge.live{background:rgba(47,191,113,.18);color:#9ff0c4}
+.clock{font-variant-numeric:tabular-nums;font-weight:800;font-size:18px;min-width:62px}
+select{background:rgba(0,0,0,.25);color:var(--text);border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit}
+.legend{right:12px;bottom:12px;width:316px;padding:10px 12px;display:grid;grid-template-columns:1fr 1fr;gap:6px 10px;font-size:12.5px}
+.legend h3{grid-column:1/-1;margin:0;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em}
+.legend span{display:flex;align-items:center;gap:7px}
+.legend .note{grid-column:1/-1;color:var(--muted);font-size:11px;margin-top:2px}
+.toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);padding:18px 22px;max-width:420px;text-align:center}
+.hide{display:none!important}
+@media (max-width:900px){
+  nav.rail{top:auto;bottom:150px;width:auto;right:12px;flex-direction:row;flex-wrap:wrap;padding:8px}
+  nav.rail h3,.mini,.legend{display:none}
+  .timebar{left:12px;right:12px;bottom:12px}
+  aside.inspector{top:auto;bottom:12px;left:12px;right:12px;width:auto;max-height:55vh;z-index:6}
+  .brand{min-width:0;border-right:0}
+  .brand small{display:none}
+  header.top{gap:4px;padding:8px}
+  .card{padding:2px 8px;border-right:0}
+  .card.optional,.card.mobile-hide{display:none}
+  .timebar .days,.timebar select,#engineClock{display:none}
+}
+</style>
+</head>
+<body>
+<canvas id="view" aria-label="Isometric city map with residents"></canvas>
+
+<header class="panel top">
+  <div class="brand"><h1 id="brandName">AGENTOPIA <b>CITY</b></h1><small id="brandTag">People · Places · Choices</small></div>
+  <div class="card"><div class="wx" id="wxIcon">☀️</div><div><div class="v" id="wxTemp">--</div><div class="k" id="wxCond">--</div></div></div>
+  <div class="card"><div><div class="v" id="dateLabel">--</div><div class="k" id="weekLabel">--</div></div></div>
+  <div class="card mobile-hide"><div><div class="v" id="statCitizens">--</div><div class="k">Residents</div></div></div>
+  <div class="card"><div><div class="v" id="statMoving">--</div><div class="k">In motion</div></div></div>
+  <div class="card optional"><div><div class="v" id="statCommute">--</div><div class="k">Avg commute</div></div></div>
+  <div class="card optional"><div><div class="v" id="statTransit">--</div><div class="k">Transit share</div></div></div>
+  <div class="spacer"></div>
+  <a class="btn mobile-hide-btn" href="/">Dashboard</a>
+</header>
+
+<nav class="panel rail">
+  <div class="search"><input id="search" placeholder="Find a resident…" autocomplete="off"><div class="results" id="results"></div></div>
+  <h3>Layers</h3>
+  <button class="btn on" data-layer="residents">👥 Residents</button>
+  <button class="btn on" data-layer="transit">🚇 'L' &amp; Metra</button>
+  <button class="btn on" data-layer="labels">🏷️ Neighborhoods</button>
+  <button class="btn" data-layer="trails">〰️ Commute trails</button>
+  <h3>Go to</h3>
+  <button class="btn" data-go="fit">🗺️ Whole city</button>
+  <button class="btn" data-go="The Loop">🏙️ The Loop</button>
+  <button class="btn" data-go="North Lawndale">🏠 North Lawndale</button>
+  <button class="btn" data-go="Hyde Park">🎓 Hyde Park</button>
+</nav>
+
+<aside class="panel inspector" id="inspector" aria-live="polite"></aside>
+
+<section class="panel mini"><h3><span id="miniTitle">City</span><span style="color:var(--muted)">click to jump</span></h3><canvas id="mini"></canvas></section>
+
+<section class="panel timebar">
+  <span class="mode-badge" id="modeBadge">Replay</span>
+  <button class="btn" id="play">⏸</button>
+  <div class="days" id="days"></div>
+  <span class="clock" id="clock">--:--</span>
+  <input type="range" id="scrub" min="0" max="1439" step="1" value="450" aria-label="Time of day">
+  <select id="speed" aria-label="Playback speed">
+    <option value="60">1 min/s ×60</option>
+    <option value="300" selected>5 min/s ×300</option>
+    <option value="900">15 min/s ×900</option>
+    <option value="3600">1 hr/s ×3600</option>
+  </select>
+  <button class="btn" id="engineClock" title="Jump to the engine's phase-derived city clock">Engine clock</button>
+</section>
+
+<section class="panel legend">
+  <h3>What residents are doing</h3>
+  <span><i class="dot" style="background:var(--home)"></i>Home / rest</span>
+  <span><i class="dot" style="background:var(--work)"></i>Working</span>
+  <span><i class="dot" style="background:var(--study)"></i>Studying</span>
+  <span><i class="dot" style="background:var(--out)"></i>Out / errands</span>
+  <span><i class="dot" style="background:var(--transit)"></i>Commuting</span>
+  <span><i class="dot" style="background:#fff;outline:2px solid var(--accent-2)"></i>Selected</span>
+  <div class="note" id="authorityNote">Replays the schedules the engine reported. The viewer never changes the simulation.</div>
+</section>
+
+<div class="panel toast hide" id="toast"></div>
+
+<script>
+(() => {
+'use strict';
+// ---------- constants ----------
+const DAYS = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+const COLORS = {home:'#f2b544', work:'#4c8dff', study:'#a46cff', out:'#2fbf71', transit:'#ff6b6b'};
+const MODE_LABEL = {walk:'Walking', bike:'Bike', e_bike:'E-bike', cta_bus:'CTA bus', cta_l:"CTA 'L'", metra:'Metra', pace_bus:'Pace bus', ridehail:'Ride-hail', private_car:'Car', private_ev:'EV', autonomous_ev:'Autonomous EV', ddot_bus:'DDOT bus', smart_bus:'SMART bus', qline_rail:'QLINE'};
+const MODE_ICON = {walk:'🚶', bike:'🚲', e_bike:'🚲', cta_bus:'🚌', pace_bus:'🚌', ddot_bus:'🚌', smart_bus:'🚌', cta_l:'🚇', metra:'🚆', qline_rail:'🚋', ridehail:'🚕', private_car:'🚗', private_ev:'🚙', autonomous_ev:'🚘'};
+const WX_ICON = {clear:'☀️', hot:'🌡️', mild:'⛅', cool_clear:'🌤️', cold_clear:'🌤️', cloudy:'☁️', rain:'🌧️', storm:'⛈️', snow:'🌨️', winter_mix:'🌨️', wind:'💨'};
+const TW = 64, TH = 32;       // iso pixels per mile at zoom 1
+const BLOCK = 1/8;            // Chicago: 8 blocks per mile
+const S = Math.min(3, Math.max(2, Math.round(window.devicePixelRatio || 2))); // static layer resolution
+
+// ---------- helpers ----------
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function hash(str){ let h = 2166136261 >>> 0; for (let i=0;i<str.length;i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function rnd(seed){ let t = seed >>> 0; return () => { t += 0x6D2B79F5; let r = Math.imul(t ^ t >>> 15, 1 | t); r ^= r + Math.imul(r ^ r >>> 7, 61 | r); return ((r ^ r >>> 14) >>> 0) / 4294967296; }; }
+const hm = s => { const [h,m] = String(s||'0:0').split(':').map(Number); return h*60 + (m||0); };
+const fmt = m => { m = ((Math.round(m)%1440)+1440)%1440; const h = Math.floor(m/60), mm = m%60; const ap = h<12?'AM':'PM'; return `${((h+11)%12)+1}:${String(mm).padStart(2,'0')} ${ap}`; };
+function shade(hex, f){ const n = parseInt(hex.slice(1),16); let r=n>>16,g=n>>8&255,b=n&255; const t=f<0?0:255, p=Math.abs(f); r=Math.round((t-r)*p+r); g=Math.round((t-g)*p+g); b=Math.round((t-b)*p+b); return `rgb(${r},${g},${b})`; }
+
+// world (x east, y north, miles) -> iso base pixels (zoom 1)
+const iso = (x, y) => [ (x - y) * TW/2, -(x + y) * TH/2 ];
+
+// ---------- state ----------
+let scene = null, zonesByName = {}, lines = [], residents = [];
+let shoreline = [], rivers = [], parks = [], bounds = [-15,-15,6,10.5];
+let staticCanvas = null, staticOrigin = [0,0];
+let cam = {x:0, y:0, z:0.9};        // x,y = iso base px at screen center
+let layers = {residents:true, transit:true, labels:true, trails:false};
+let play = true, speed = 300, day = 0, minute = 450, mode = 'replay';
+let selected = null, follow = false, hover = null;
+let particles = [];
+const view = $('#view'), ctx = view.getContext('2d');
+
+// ---------- geometry ----------
+function shoreX(y){
+  if (!shoreline.length) return Infinity;
+  const pts = shoreline;
+  if (y >= pts[0][1]) return pts[0][0];
+  for (let i=1;i<pts.length;i++){
+    const [x0,y0] = pts[i-1], [x1,y1] = pts[i];
+    if (y <= y0 && y >= y1){ const t = (y0-y)/(y0-y1 || 1); return x0 + (x1-x0)*t; }
+  }
+  return pts[pts.length-1][0];
+}
+const isLake = (x,y) => x > shoreX(y);
+function segDist(px,py,ax,ay,bx,by){ const dx=bx-ax, dy=by-ay; const l=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/l; t=Math.max(0,Math.min(1,t)); const qx=ax+t*dx-px, qy=ay+t*dy-py; return Math.sqrt(qx*qx+qy*qy); }
+function polyDist(px,py,poly){ let d=Infinity; for (let i=1;i<poly.length;i++) d=Math.min(d,segDist(px,py,poly[i-1][0],poly[i-1][1],poly[i][0],poly[i][1])); return d; }
+const inPark = (x,y) => parks.some(p => { const dx=(x-p.at[0])/p.r[0], dy=(y-p.at[1])/p.r[1]; return dx*dx+dy*dy <= 1; });
+
+const EXPRESSWAYS = [
+  [[-0.4,-0.6],[-0.4,-2.4],[-0.1,-4],[-0.1,-12],[0.4,-15]],
+  [[-0.5,0.6],[-1.5,1.3],[-2.8,2.6],[-4.3,4.6],[-7,6.2],[-14.5,6.8]],
+  [[-0.3,-0.3],[-10.5,-0.4]],
+  [[-0.4,-2.4],[-2,-3],[-5,-4.2],[-11,-5.6]],
+];
+function lsdPath(){ const out=[]; for (let y=9.3; y>=-9; y-=0.25) out.push([shoreX(y)-0.1, y]); return out; }
+
+// ---------- static city layer ----------
+function nearestZone(x,y){
+  let best=null, bd=Infinity;
+  for (const z of scene.zones){ const d=(z.x-x)**2+(z.y-y)**2; if (d<bd){ bd=d; best=z; } }
+  return [best, Math.sqrt(bd)];
+}
+
+function buildStatic(){
+  const [x0,y0,x1,y1] = bounds;
+  const corners = [[x0,y0],[x1,y0],[x0,y1],[x1,y1]].map(([x,y]) => iso(x,y));
+  const minX = Math.min(...corners.map(c=>c[0])), maxX = Math.max(...corners.map(c=>c[0]));
+  const minY = Math.min(...corners.map(c=>c[1])) - 140, maxY = Math.max(...corners.map(c=>c[1])) + 20;
+  staticOrigin = [minX, minY];
+  const c = document.createElement('canvas');
+  c.width = Math.ceil((maxX-minX)*S); c.height = Math.ceil((maxY-minY)*S);
+  const g = c.getContext('2d');
+  g.scale(S,S); g.translate(-minX, -minY);
+  const P = (x,y,h=0) => { const [a,b] = iso(x,y); return [a, b - h]; };
+  const quad = (pts, fill) => { g.beginPath(); g.moveTo(...pts[0]); for (let i=1;i<pts.length;i++) g.lineTo(...pts[i]); g.closePath(); g.fillStyle = fill; g.fill(); };
+  const winter = (scene.context.season === 'winter');
+
+  // ground + lake
+  const ground = winter ? '#cdd3da' : '#c9c2b2';
+  quad([P(x0,y0),P(x1,y0),P(x1,y1),P(x0,y1)], ground);
+  if (shoreline.length){
+    const lakePoly = [[x1+1,y1+1],[shoreline[0][0],y1+1], ...shoreline, [shoreline[shoreline.length-1][0], y0-1],[x1+1,y0-1]].map(([x,y])=>P(x,y));
+    const grd = g.createLinearGradient(...P(0,0), ...P(x1,y1));
+    grd.addColorStop(0, '#2b7fb8'); grd.addColorStop(1, '#14507f');
+    quad(lakePoly, grd);
+    // gentle wave strokes
+    g.strokeStyle = 'rgba(255,255,255,.10)'; g.lineWidth = 0.6;
+    const r = rnd(7);
+    for (let i=0;i<500;i++){ const y = y0 + r()*(y1-y0), x = shoreX(y) + 0.3 + r()*6; if (x>x1) continue; const [a,b]=P(x,y); g.beginPath(); g.moveTo(a-3,b); g.quadraticCurveTo(a,b-1.5,a+3,b); g.stroke(); }
+    // beach
+    g.strokeStyle = winter ? '#e9edf1' : '#e7d7a8'; g.lineWidth = 2.2; g.beginPath(); shoreline.forEach((p,i)=>{ const q=P(p[0],p[1]); i?g.lineTo(...q):g.moveTo(...q); }); g.stroke();
+  }
+  // parks
+  for (const p of parks){
+    g.beginPath();
+    for (let a=0;a<=Math.PI*2+0.01;a+=0.2){ const q=P(p.at[0]+Math.cos(a)*p.r[0], p.at[1]+Math.sin(a)*p.r[1]); a?g.lineTo(...q):g.moveTo(...q); }
+    g.fillStyle = winter ? '#dfe7e2' : '#7fb069'; g.fill();
+  }
+  // lakefront park strip
+  if (shoreline.length){
+    g.beginPath(); const strip=[];
+    for (let y=9.3;y>=-9.2;y-=0.2) strip.push(P(shoreX(y)-((y>-1.4&&y<1.4)?0.12:0.28), y));
+    for (let y=-9.2;y<=9.3;y+=0.2) strip.push(P(shoreX(y)-0.02, y));
+    strip.forEach((q,i)=> i?g.lineTo(...q):g.moveTo(...q)); g.closePath();
+    g.fillStyle = winter ? '#e3eae5' : '#8cbf6d'; g.fill();
+  }
+  // rivers
+  g.lineCap='round'; g.lineJoin='round';
+  for (const r of rivers){ g.strokeStyle='#2a6f9e'; g.lineWidth=3.2; g.beginPath(); r.forEach((p,i)=>{ const q=P(p[0],p[1]); i?g.lineTo(...q):g.moveTo(...q); }); g.stroke(); }
+  // expressways
+  const roads = shoreline.length ? [...EXPRESSWAYS, lsdPath()] : [];
+  for (const r of roads){
+    g.strokeStyle='#6b7280'; g.lineWidth=3.6; g.beginPath(); r.forEach((p,i)=>{ const q=P(p[0],p[1]); i?g.lineTo(...q):g.moveTo(...q); }); g.stroke();
+    g.strokeStyle='rgba(255,236,170,.55)'; g.lineWidth=0.5; g.setLineDash([2,3]); g.stroke(); g.setLineDash([]);
+  }
+  // airports
+  for (const name of ["O'Hare","Midway"]){
+    const z = zonesByName[name]; if (!z) continue;
+    const s = name==="O'Hare" ? 1.2 : 0.45;
+    quad([P(z.x-s,z.y-s),P(z.x+s,z.y-s),P(z.x+s,z.y+s),P(z.x-s,z.y+s)], '#9aa1a9');
+    g.strokeStyle='#e5e7eb'; g.lineWidth=1.2;
+    for (let k=-1;k<=1;k++){ g.beginPath(); g.moveTo(...P(z.x-s*0.9, z.y+k*s*0.5)); g.lineTo(...P(z.x+s*0.9, z.y+k*s*0.5+0.2*s)); g.stroke(); }
+  }
+
+  // blocks, back-to-front
+  const blocks = [];
+  const loop = zonesByName['The Loop'] || zonesByName['Downtown'] || {x:0,y:0};
+  for (let x = Math.ceil(x0/BLOCK)*BLOCK; x <= x1; x += BLOCK){
+    for (let y = Math.ceil(y0/BLOCK)*BLOCK; y <= y1; y += BLOCK){
+      const cx = x + BLOCK/2, cy = y + BLOCK/2;
+      if (isLake(cx, cy) || isLake(cx+0.3, cy) && shoreline.length && cx > shoreX(cy) - 0.3 && !(cy>-1.4&&cy<1.4)) continue;
+      if (inPark(cx,cy)) { blocks.push({x:cx,y:cy,park:true}); continue; }
+      if (rivers.some(r => polyDist(cx,cy,r) < 0.07)) continue;
+      if (roads.some(r => polyDist(cx,cy,r) < 0.05)) continue;
+      const [z, zd] = nearestZone(cx, cy);
+      if (z && (z.name==="O'Hare" && zd<1.3 || z.name==='Midway' && zd<0.5)) continue;
+      blocks.push({x:cx, y:cy, z, zd});
+    }
+  }
+  blocks.sort((a,b) => (b.x+b.y) - (a.x+a.y));
+  for (const bk of blocks){
+    const r = rnd(hash(`${bk.x.toFixed(3)},${bk.y.toFixed(3)}`));
+    const mileEdge = (v) => Math.abs(v - Math.round(v)) < BLOCK*0.6;
+    const inset = (mileEdge(bk.x) || mileEdge(bk.y)) ? 0.022 : 0.012;
+    const h = BLOCK/2 - inset;
+    const lot = [P(bk.x-h,bk.y-h),P(bk.x+h,bk.y-h),P(bk.x+h,bk.y+h),P(bk.x-h,bk.y+h)];
+    if (bk.park){ if (r()<0.55) tree(g, P, bk.x+(r()-.5)*0.08, bk.y+(r()-.5)*0.08, winter, r); continue; }
+    const dLoop = Math.hypot(bk.x-loop.x, bk.y-loop.y);
+    const city = scene.city.id;
+    const suburb = (bk.x < -9.2 || bk.y < -13.5 || bk.y > 9.6);
+    const kind = bk.z ? bk.z.kind : 'residential';
+    let style, storeys, fp = 0.9;
+    if (kind === 'campus' && bk.zd < 0.22){ style='campus'; storeys = 3 + Math.floor(r()*5); fp = 0.75; }
+    else if (dLoop < 0.9){ style='tower'; storeys = Math.round(14 + r()*42 * Math.max(0.2, 1 - dLoop/0.9)); fp = 0.8; }
+    else if (dLoop < 2.2){ style = r()<0.5?'midrise':'brick'; storeys = 4 + Math.floor(r()*9); }
+    else if (/Pullman|Bridgeport|Goose Island/.test(bk.z?.name||'') && r()<0.5 || (bk.y<-2 && bk.y>-4.2 && bk.x<-0.8 && bk.x>-4.8 && r()<0.35)){ style='industrial'; storeys = 1 + Math.floor(r()*2); fp = 0.95; }
+    else if (suburb){ if (r()<0.55){ if (r()<0.4) tree(g,P,bk.x,bk.y,winter,r); continue; } style = 'bungalow'; storeys = 1; fp = 0.55; }
+    else { const d = r(); style = d<0.45?'bungalow':(d<0.8?'twoflat':'greystone'); storeys = style==='bungalow'?1:(2+Math.floor(r()*2)); fp = style==='bungalow'?0.6:0.72; }
+    // lot ground
+    quad(lot, style==='tower' ? '#b9b6ae' : (winter ? '#e8ecef' : '#b7c39a'));
+    if (style==='bungalow' || style==='twoflat' || style==='greystone'){
+      // rows of houses: split lot into 2-3 parcels
+      const n = style==='bungalow' ? 3 : 2;
+      for (let i=0;i<n;i++){
+        const px = bk.x - h + (i+0.5)*(2*h/n), w = (2*h/n)*0.36, d = h*0.55;
+        box(g, P, px, bk.y, w, d, storeys*3.2, palette(style, r), style);
+      }
+      if (r()<0.6) tree(g,P,bk.x+h*0.8,bk.y-h*0.85,winter,r);
+    } else {
+      const s = h*fp;
+      box(g, P, bk.x, bk.y, s, s, storeys*(style==='tower'?2.4:2.6), palette(style, r), style);
+    }
+  }
+  // campus markers
+  staticCanvas = c;
+}
+
+function palette(style, r){
+  const pick = a => a[Math.floor(r()*a.length)];
+  switch(style){
+    case 'tower': return pick(['#7a8ea8','#5f7590','#8aa0b8','#4f6680','#9aaec4','#6c7f96']);
+    case 'midrise': return pick(['#a7826b','#b5a189','#8f7d6c','#9aa3ad','#c2b39b']);
+    case 'brick': return pick(['#9b4d3a','#a65a43','#8a4535','#b0664c']);
+    case 'greystone': return pick(['#b9b4a8','#a7a397','#c6c1b4']);
+    case 'twoflat': return pick(['#a3503b','#b6694f','#8e4b3b','#c27a5b']);
+    case 'bungalow': return pick(['#b3654c','#a75b44','#c07c5c','#d0a27c','#9c5d4a']);
+    case 'industrial': return pick(['#8c8f94','#7f8a8f','#a0978a']);
+    case 'campus': return pick(['#d8ccb4','#cfc2a7','#e1d6c0']);
+  }
+  return '#999';
+}
+
+function box(g, P, x, y, hx, hy, H, color, style){
+  const A=P(x-hx,y-hy), B=P(x+hx,y-hy), C=P(x+hx,y+hy), D=P(x-hx,y+hy);
+  const up = p => [p[0], p[1]-H];
+  const f = (pts, col) => { g.beginPath(); g.moveTo(...pts[0]); for (let i=1;i<pts.length;i++) g.lineTo(...pts[i]); g.closePath(); g.fillStyle=col; g.fill(); };
+  f([A,B,up(B),up(A)], shade(color,-0.08));       // south face
+  f([A,D,up(D),up(A)], shade(color,-0.30));       // west face
+  f([up(A),up(B),up(C),up(D)], shade(color, 0.12)); // roof
+  if (style==='tower' && H>14){
+    g.strokeStyle='rgba(220,235,255,.35)'; g.lineWidth=0.35;
+    for (let k=3;k<H-1;k+=2.4){ g.beginPath(); g.moveTo(A[0],A[1]-k); g.lineTo(B[0],B[1]-k); g.stroke(); g.beginPath(); g.moveTo(A[0],A[1]-k); g.lineTo(D[0],D[1]-k); g.stroke(); }
+  } else if (style==='bungalow'){
+    // pitched roof hint
+    g.strokeStyle='rgba(60,30,20,.35)'; g.lineWidth=0.5; g.beginPath(); g.moveTo(...up(A)); g.lineTo(...up(C)); g.stroke();
+  }
+}
+function tree(g, P, x, y, winter, r){
+  const [a,b] = P(x,y); const s = 1.6 + r()*1.4;
+  g.fillStyle='rgba(0,0,0,.15)'; g.beginPath(); g.ellipse(a+1,b,s*1.1,s*0.5,0,0,Math.PI*2); g.fill();
+  g.fillStyle='#6b4f3a'; g.fillRect(a-0.3,b-s*1.2,0.6,s*1.2);
+  g.fillStyle = winter ? (r()<0.5?'#c9d2cc':'#a9b3ad') : (r()<0.5?'#3f8f4a':'#57a356');
+  g.beginPath(); g.arc(a, b-s*1.6, s, 0, Math.PI*2); g.fill();
+}
+
+// ---------- residents ----------
+function prepResidents(){
+  residents = scene.residents.map(r => {
+    const h = hash(r.name);
+    const rr = rnd(h);
+    const ang = rr()*Math.PI*2, rad = 0.08 + rr()*0.28;
+    const ang2 = rr()*Math.PI*2, rad2 = 0.03 + rr()*0.14;
+    const tones = ['#f1c7a3','#e0ac85','#c68863','#a86b45','#7d4a2f','#5a3622'];
+    const shirts = ['#f97316','#22c55e','#0ea5e9','#eab308','#ec4899','#8b5cf6','#14b8a6','#ef4444'];
+    return {...r, h, skin: tones[h % tones.length], shirt: shirts[(h>>3) % shirts.length],
+      jitterHome:[Math.cos(ang)*rad, Math.sin(ang)*rad], jitterAway:[Math.cos(ang2)*rad2, Math.sin(ang2)*rad2],
+      pos:[0,0], activity:'home', label:'', trip:null};
+  });
+}
+const zxy = name => { const z = zonesByName[name]; return z ? [z.x, z.y] : null; };
+const onLand = p => (shoreline.length && isLake(p[0], p[1])) ? [shoreX(p[1]) - 0.06, p[1]] : p;
+function routeFor(trip){
+  const a = zxy(trip.origin), b = zxy(trip.destination);
+  if (!a || !b) return null;
+  if (trip.mode === 'cta_l' || trip.mode === 'metra'){
+    for (const L of lines){
+      if (L.mode && L.mode !== trip.mode) continue;
+      const i = L.stops.indexOf(trip.origin), j = L.stops.indexOf(trip.destination);
+      if (i >= 0 && j >= 0){ const s = i<=j ? L.stops.slice(i,j+1) : L.stops.slice(j,i+1).reverse(); return {pts: s.map(zxy).filter(Boolean), line:L}; }
+    }
+  }
+  // Chicago is a grid: go along one axis, then the other, staying on land.
+  const opts = [[b[0], a[1]], [a[0], b[1]]];
+  if ((hash(trip.citizen+trip.depart) & 1) === 1) opts.reverse();
+  const wet = m => [0.25,0.5,0.75].some(f => isLake(a[0]+(m[0]-a[0])*f, a[1]+(m[1]-a[1])*f) || isLake(m[0]+(b[0]-m[0])*f, m[1]+(b[1]-m[1])*f));
+  const mid = opts.find(m => !wet(m));
+  return {pts: mid ? [a, mid, b] : [a, b]};
+}
+function along(pts, t){
+  let total = 0; const seg = [];
+  for (let i=1;i<pts.length;i++){ const d = Math.hypot(pts[i][0]-pts[i-1][0], pts[i][1]-pts[i-1][1]); seg.push(d); total += d; }
+  let target = t*total;
+  for (let i=0;i<seg.length;i++){ if (target <= seg[i] || i===seg.length-1){ const f = seg[i] ? Math.min(1,target/seg[i]) : 0; return [pts[i][0]+(pts[i+1][0]-pts[i][0])*f, pts[i][1]+(pts[i+1][1]-pts[i][1])*f]; } target -= seg[i]; }
+  return pts[pts.length-1];
+}
+function category(act){
+  const a = (act||'').toLowerCase();
+  if (/school|class|study|learning network|lecture/.test(a) && !/home/.test(a)) return 'study';
+  if (/^work|remote work/.test(a)) return 'work';
+  if (/errand|recreation|leisure$/.test(a) && !/home/.test(a)) return 'out';
+  return 'home';
+}
+function placeResidents(){
+  const dname = DAYS[day];
+  let moving = 0;
+  for (const r of residents){
+    r.trip = null;
+    const trips = (r.trips||[]).filter(t => t.day === dname);
+    for (const t of trips){
+      const s = hm(t.depart), e = s + (t.minutes||0);
+      if (minute >= s && minute < e){ r.trip = t; r.tripT = (minute - s) / Math.max(1, e - s); break; }
+    }
+    if (r.trip){
+      const route = r.route && r.routeKey === r.trip.depart+r.trip.day ? r.route : routeFor(r.trip);
+      r.route = route; r.routeKey = r.trip.depart + r.trip.day;
+      const p = route ? along(route.pts, r.tripT) : (zxy(r.home) || [0,0]);
+      r.pos = onLand(p); r.activity = 'transit'; moving++;
+      r.label = `${MODE_LABEL[r.trip.mode]||r.trip.mode} → ${r.trip.destination}`;
+      continue;
+    }
+    const sched = (r.schedule||[]).find(d => d.day === dname);
+    let loc = r.home, act = 'home';
+    if (sched){
+      const blocks = sched.blocks || [];
+      let cur = blocks.find(b => minute >= hm(b.start) && minute < hm(b.end) + (b.end==='23:59'?1:0));
+      if (!cur){ const before = blocks.filter(b => hm(b.end) <= minute); cur = before[before.length-1] || blocks[0]; }
+      if (cur){ loc = cur.location || r.home; act = cur.activity; }
+    }
+    const base = zxy(loc) || zxy(r.home) || [0,0];
+    const atHome = loc === r.home;
+    const j = atHome ? r.jitterHome : r.jitterAway;
+    r.pos = onLand([base[0] + j[0], base[1] + j[1]]);
+    r.activity = category(act); r.label = act; r.where = loc;
+  }
+  return moving;
+}
+
+// ---------- camera ----------
+function screenOf(x, y){ const [a,b] = iso(x,y); return [(a - cam.x)*cam.z + view.clientWidth/2, (b - cam.y)*cam.z + view.clientHeight/2]; }
+function centerOn(x, y, z){ const [a,b] = iso(x,y); cam.x = a; cam.y = b; if (z) cam.z = z; }
+function fitCity(){
+  const zs = scene.zones.filter(z => z.kind !== 'airport');
+  const xs = zs.map(z=>iso(z.x,z.y)[0]), ys = zs.map(z=>iso(z.x,z.y)[1]);
+  const w = Math.max(...xs)-Math.min(...xs), h = Math.max(...ys)-Math.min(...ys);
+  cam.x = (Math.max(...xs)+Math.min(...xs))/2; cam.y = (Math.max(...ys)+Math.min(...ys))/2;
+  cam.z = Math.min((view.clientWidth-200)/(w+120), (view.clientHeight-220)/(h+120));
+}
+
+// ---------- drawing ----------
+function resize(){ const d = Math.min(2, window.devicePixelRatio||1); view.width = view.clientWidth*d; view.height = view.clientHeight*d; ctx.setTransform(d,0,0,d,0,0); }
+function nightAlpha(m){ const h = m/60; if (h>=7.5 && h<=17.5) return 0; if (h<5.5 || h>20) return 0.5; if (h<7.5) return 0.5*(7.5-h)/2; return 0.5*(h-17.5)/2.5; }
+
+function draw(){
+  const W = view.clientWidth, H = view.clientHeight;
+  ctx.fillStyle = '#0b1220'; ctx.fillRect(0,0,W,H);
+  if (staticCanvas){
+    // blit only the visible part of the pre-rendered city
+    const left = cam.x - W/2/cam.z, top = cam.y - H/2/cam.z;
+    let srcX = (left - staticOrigin[0])*S, srcY = (top - staticOrigin[1])*S, srcW = W/cam.z*S, srcH = H/cam.z*S;
+    let dx = 0, dy = 0, dw = W, dh = H;
+    if (srcX < 0){ dx = -srcX/S*cam.z; dw -= dx; srcW += srcX; srcX = 0; }
+    if (srcY < 0){ dy = -srcY/S*cam.z; dh -= dy; srcH += srcY; srcY = 0; }
+    if (srcX + srcW > staticCanvas.width){ const over = srcX + srcW - staticCanvas.width; srcW -= over; dw -= over/S*cam.z; }
+    if (srcY + srcH > staticCanvas.height){ const over = srcY + srcH - staticCanvas.height; srcH -= over; dh -= over/S*cam.z; }
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = cam.z > 1.5 ? 'high' : 'medium';
+    if (srcW > 0 && srcH > 0) ctx.drawImage(staticCanvas, srcX, srcY, srcW, srcH, dx, dy, dw, dh);
+  }
+  // transit lines
+  if (layers.transit){
+    for (const L of lines){
+      const pts = L.stops.map(zxy).filter(Boolean).map(p => screenOf(p[0], p[1]));
+      if (pts.length < 2) continue;
+      ctx.lineJoin='round'; ctx.lineCap='round';
+      ctx.strokeStyle='rgba(255,255,255,.85)'; ctx.lineWidth=Math.max(3, 5*cam.z/1.4); ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.stroke();
+      ctx.strokeStyle=L.color; ctx.lineWidth=Math.max(1.6, 3*cam.z/1.4); if (L.mode==='metra') ctx.setLineDash([6,4]); ctx.stroke(); ctx.setLineDash([]);
+      for (const p of pts){ ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(p[0],p[1],Math.max(2.2,3*cam.z/1.4),0,Math.PI*2); ctx.fill(); ctx.strokeStyle=L.color; ctx.lineWidth=1.5; ctx.stroke(); }
+    }
+  }
+  // trails
+  if (layers.trails){
+    ctx.lineWidth = 1.2;
+    for (const r of residents){
+      if (!r.trip || !r.route) continue;
+      const pts = r.route.pts.map(p => screenOf(p[0],p[1]));
+      ctx.strokeStyle = 'rgba(255,107,107,.35)'; ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.stroke();
+    }
+  }
+  // selected route
+  if (selected && selected.trip && selected.route){
+    const pts = selected.route.pts.map(p => screenOf(p[0],p[1]));
+    ctx.setLineDash([8,6]); ctx.lineDashOffset = -performance.now()/40;
+    ctx.strokeStyle = '#5fd0ff'; ctx.lineWidth = 3; ctx.beginPath(); pts.forEach((p,i)=> i?ctx.lineTo(...p):ctx.moveTo(...p)); ctx.stroke(); ctx.setLineDash([]);
+    const end = pts[pts.length-1]; ctx.fillStyle='#5fd0ff'; ctx.beginPath(); ctx.arc(end[0], end[1], 6, 0, Math.PI*2); ctx.fill();
+  }
+  // labels (greedy collision avoidance; neighborhoods first)
+  const taken = [];
+  const free = (x,y,w,h) => { if (taken.some(t => x < t[0]+t[2] && x+w > t[0] && y < t[1]+t[3] && y+h > t[1])) return false; taken.push([x,y,w,h]); return true; };
+  if (selected){ const [sx,sy] = screenOf(selected.pos[0], selected.pos[1]); taken.push([sx-40, sy-48, 80, 22]); }
+  if (layers.labels){
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    const KEY = ['The Loop','North Lawndale','Hyde Park','Lincoln Park',"O'Hare",'Pullman','Logan Square','Austin','Bronzeville','Rogers Park'];
+    const rank = z => (z.kind==='campus' ? 2 : KEY.includes(z.name) ? 0 : 1);
+    const order = [...scene.zones].sort((a,b) => rank(a) - rank(b));
+    for (const z of order){
+      const campus = z.kind === 'campus';
+      if (campus && cam.z < 2.4) continue;
+      if (!campus && cam.z < 0.55 && !['The Loop','North Lawndale','Hyde Park','Lincoln Park','O\'Hare','Pullman','Logan Square','Austin','Bronzeville','Rogers Park'].includes(z.name)) continue;
+      const [x,y] = screenOf(z.x, z.y);
+      const fs = campus ? 11 : Math.max(11, Math.min(15, 11*cam.z));
+      ctx.font = `${campus?600:800} ${fs}px Inter, system-ui, sans-serif`;
+      const label = campus ? `🎓 ${z.name}` : z.name.toUpperCase();
+      const w = ctx.measureText(label).width + 14;
+      if (!free(x-w/2, y-30-fs/2-4, w, fs+8)) continue;
+      ctx.fillStyle = campus ? 'rgba(42,24,72,.78)' : 'rgba(10,18,32,.72)';
+      roundRect(ctx, x-w/2, y-30-fs/2-4, w, fs+8, 7); ctx.fill();
+      ctx.fillStyle = campus ? '#e9dcff' : '#fff'; ctx.fillText(label, x, y-30);
+    }
+  }
+  // residents
+  if (layers.residents){
+    const list = residents.map(r => ({r, s:screenOf(r.pos[0], r.pos[1])})).sort((a,b)=>a.s[1]-b.s[1]);
+    const big = cam.z >= 2.4;
+    for (const {r, s} of list){
+      const [x,y] = s; if (x<-20||y<-20||x>W+20||y>H+20) continue;
+      const col = COLORS[r.activity] || COLORS.home;
+      const sc = Math.max(0.7, Math.min(2.2, cam.z*0.9));
+      ctx.fillStyle='rgba(0,0,0,.25)'; ctx.beginPath(); ctx.ellipse(x, y, 5*sc, 2.2*sc, 0, 0, Math.PI*2); ctx.fill();
+      if (r.activity === 'transit' && r.trip && !['walk','bike','e_bike'].includes(r.trip.mode)){
+        const isRail = r.trip.mode==='cta_l' || r.trip.mode==='metra';
+        const bus = /bus/.test(r.trip.mode);
+        const len = (isRail? 13 : bus ? 11 : 7)*sc, ht = (isRail||bus? 5.5 : 4.5)*sc;
+        ctx.fillStyle = isRail ? (r.route?.line?.color || '#c60c30') : bus ? '#2563eb' : r.shirt;
+        roundRect(ctx, x-len/2, y-ht-3*sc, len, ht, 2*sc); ctx.fill();
+        ctx.fillStyle = 'rgba(210,235,255,.9)'; ctx.fillRect(x-len/2+2*sc, y-ht-2*sc, len-4*sc, ht*0.35);
+      } else {
+        ctx.fillStyle = r.shirt; roundRect(ctx, x-2.6*sc, y-9*sc, 5.2*sc, 7*sc, 2*sc); ctx.fill();
+        ctx.fillStyle = r.skin; ctx.beginPath(); ctx.arc(x, y-11.3*sc, 2.6*sc, 0, Math.PI*2); ctx.fill();
+      }
+      // activity pip
+      ctx.fillStyle = col; ctx.beginPath(); ctx.arc(x+4.5*sc, y-13*sc, 2.4*sc, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle='rgba(0,0,0,.4)'; ctx.lineWidth=0.8; ctx.stroke();
+      if (r === selected || r === hover){
+        ctx.strokeStyle = r === selected ? '#5fd0ff' : 'rgba(255,255,255,.8)'; ctx.lineWidth = 2.5;
+        ctx.beginPath(); ctx.ellipse(x, y, 10*sc, 4.5*sc, 0, 0, Math.PI*2); ctx.stroke();
+      }
+      if (big || r === selected || r === hover){
+        ctx.font = `700 ${Math.round(10*Math.min(1.3,sc))}px Inter, system-ui, sans-serif`;
+        const t = r.name.split(' ')[0]; const w = ctx.measureText(t).width + 10;
+        if (r !== selected && !free(x-w/2, y-30*sc, w, 15)) continue;
+        ctx.fillStyle = r===selected ? '#3d8bff' : 'rgba(10,18,32,.75)'; roundRect(ctx, x-w/2, y-30*sc, w, 15, 6); ctx.fill();
+        ctx.fillStyle = '#fff'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(t, x, y-30*sc+7.5);
+      }
+    }
+  }
+  // weather + night
+  const na = nightAlpha(minute);
+  if (na > 0){ ctx.fillStyle = `rgba(8,14,40,${na})`; ctx.fillRect(0,0,W,H); }
+  drawWeather(W,H);
+}
+function roundRect(c,x,y,w,h,r){ c.beginPath(); c.moveTo(x+r,y); c.arcTo(x+w,y,x+w,y+h,r); c.arcTo(x+w,y+h,x,y+h,r); c.arcTo(x,y+h,x,y,r); c.arcTo(x,y,x+w,y,r); c.closePath(); }
+function drawWeather(W,H){
+  const cond = scene?.context?.weatherToday?.condition;
+  const snow = /snow|winter_mix/.test(cond||''), rain = /rain|storm/.test(cond||'');
+  if (!snow && !rain){ particles.length = 0; return; }
+  while (particles.length < 180) particles.push({x:Math.random()*W, y:Math.random()*H, v:snow?0.6+Math.random()*0.8:6+Math.random()*4});
+  ctx.strokeStyle = snow ? 'rgba(255,255,255,.85)' : 'rgba(180,210,255,.45)'; ctx.fillStyle='rgba(255,255,255,.85)'; ctx.lineWidth=1;
+  for (const p of particles){
+    p.y += p.v; p.x += snow ? Math.sin(p.y/30)*0.4 : -1.5;
+    if (p.y > H){ p.y = -5; p.x = Math.random()*W; }
+    if (snow){ ctx.beginPath(); ctx.arc(p.x,p.y,1.4,0,Math.PI*2); ctx.fill(); }
+    else { ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(p.x-2,p.y+8); ctx.stroke(); }
+  }
+}
+
+// ---------- minimap ----------
+const mini = $('#mini'), mctx = mini.getContext('2d');
+function drawMini(){
+  const d = Math.min(2, window.devicePixelRatio||1);
+  const w = mini.clientWidth, h = mini.clientHeight; if (mini.width !== w*d){ mini.width = w*d; mini.height = h*d; }
+  mctx.setTransform(d,0,0,d,0,0);
+  mctx.fillStyle = '#16507f'; mctx.fillRect(0,0,w,h);
+  if (!staticCanvas) return;
+  const sw = staticCanvas.width/S, sh = staticCanvas.height/S, k = Math.min(w/sw, h/sh);
+  const ox = (w - sw*k)/2, oy = (h - sh*k)/2;
+  mctx.drawImage(staticCanvas, ox, oy, sw*k, sh*k);
+  const toMini = (a,b) => [ox + (a - staticOrigin[0])*k, oy + (b - staticOrigin[1])*k];
+  for (const r of residents){ const [a,b] = iso(r.pos[0], r.pos[1]); const [x,y] = toMini(a,b); mctx.fillStyle = r===selected ? '#5fd0ff' : (COLORS[r.activity]||'#fff'); mctx.fillRect(x-1.2,y-1.2,2.4,2.4); }
+  const W = view.clientWidth, H = view.clientHeight;
+  const [vx,vy] = toMini(cam.x - W/2/cam.z, cam.y - H/2/cam.z);
+  mctx.strokeStyle='#fff'; mctx.lineWidth=1.5; mctx.strokeRect(vx, vy, W/cam.z*k, H/cam.z*k);
+  mini._map = {ox, oy, k};
+}
+mini.addEventListener('click', e => {
+  if (!mini._map) return; const rect = mini.getBoundingClientRect(); const {ox,oy,k} = mini._map;
+  cam.x = (e.clientX - rect.left - ox)/k + staticOrigin[0]; cam.y = (e.clientY - rect.top - oy)/k + staticOrigin[1]; follow = false;
+});
+
+// ---------- UI ----------
+function bar(label, val, color){ const v = Math.max(0, Math.min(100, Number(val)||0)); return `<div class="bar"><span>${esc(label)}</span><i><b style="width:${v}%;background:${color}"></b></i><span>${Math.round(v)}</span></div>`; }
+function renderInspector(){
+  const el = $('#inspector');
+  if (!selected){ el.classList.remove('show'); return; }
+  const r = selected; el.classList.add('show');
+  const initials = r.name.split(' ').map(s=>s[0]).slice(0,2).join('');
+  const dname = DAYS[day];
+  const sched = (r.schedule||[]).find(d => d.day === dname);
+  let now, dest, eta;
+  if (r.trip){ now = `On the way: ${MODE_ICON[r.trip.mode]||''} ${MODE_LABEL[r.trip.mode]||r.trip.mode}`; dest = r.trip.destination; eta = Math.max(0, Math.round((1 - r.tripT) * r.trip.minutes)); }
+  else { now = `${r.label || 'At home'} · ${r.where || r.home}`; }
+  const nextTrip = (r.trips||[]).filter(t => t.day === dname && hm(t.depart) > minute)[0];
+  const money = r.money != null ? `$${Number(r.money).toLocaleString()}` : '—';
+  const hl = r.health || {};
+  el.innerHTML = `
+    <div class="who"><div class="avatar" style="background:${r.shirt}">${esc(initials)}</div>
+      <div><h2>${esc(r.name)}</h2><p>${r.age!=null?`Age ${esc(r.age)} · `:''}${esc(r.title||r.status||'Resident')}</p></div>
+      <button class="close" aria-label="Close" id="closeInsp">×</button></div>
+    <div style="display:flex;gap:8px;margin-top:12px">
+      <button class="btn primary" id="followBtn" style="flex:1;justify-content:center">${follow?'◉ Following':'◎ Follow citizen'}</button>
+      <button class="btn" id="locateBtn" title="Center on resident">📍</button></div>
+    <div class="facts">
+      <div class="fact"><i class="dot" style="background:${COLORS[r.activity]}"></i><div><div class="k">Right now</div><div class="v">${esc(now)}</div></div></div>
+      ${r.trip ? `<div class="fact"><span>🎯</span><div><div class="k">Destination</div><div class="v">${esc(dest)} <span style="color:var(--muted);font-weight:500">(${eta} min away · ${esc(r.trip.corridor||'')})</span></div></div></div>` :
+        nextTrip ? `<div class="fact"><span>⏭️</span><div><div class="k">Next trip</div><div class="v">${esc(fmt(hm(nextTrip.depart)))} → ${esc(nextTrip.destination)} <span style="color:var(--muted);font-weight:500">(${nextTrip.minutes} min)</span></div></div></div>` : ''}
+      <div class="fact"><span>🏠</span><div><div class="k">Lives in</div><div class="v">${esc(r.home||'—')}${r.home_type?` · <span style="color:var(--muted);font-weight:500">${esc(r.home_type)}</span>`:''}</div></div></div>
+      <div class="fact"><span>💼</span><div><div class="k">Work</div><div class="v">${esc(r.organization||'—')}${r.work?` <span style="color:var(--muted);font-weight:500">· ${esc(r.work)}</span>`:''}</div></div></div>
+      <div class="fact"><span>${MODE_ICON[r.mode]||'🚶'}</span><div><div class="k">Usual commute</div><div class="v">${esc(MODE_LABEL[r.mode]||r.mode||'—')}${r.avg_commute_minutes?` · ${esc(r.avg_commute_minutes)} min`:''}</div></div></div>
+    </div>
+    <h3>Wellbeing</h3>
+    <div class="bars">
+      ${bar('Physical', hl.physical, '#2fbf71')}
+      ${bar('Mental', hl.mental, '#5fd0ff')}
+      ${bar('Sleep', hl.sleep, '#a46cff')}
+      ${bar('Calm', 100 - (Number(hl.stress)||0), '#f2b544')}
+      <div class="bar"><span>Money</span><i><b style="width:${Math.min(100,(Number(r.money)||0)/250)}%;background:#22c55e"></b></i><span>${esc(money)}</span></div>
+    </div>
+    ${sched ? `<h3 style="margin-top:14px">${esc(dname)}</h3><div class="timeline">${(sched.blocks||[]).map(b => `<div class="tl ${minute>=hm(b.start)&&minute<hm(b.end)?'now':''}"><span class="t">${esc(b.start)}–${esc(b.end)}</span><span>${esc(b.activity)} · ${esc(b.location)}</span></div>`).join('')}</div>` : ''}
+    ${r.intro ? `<div class="intro">${esc(r.intro)}…</div>` : ''}`;
+  $('#closeInsp').onclick = () => { selected = null; follow = false; renderInspector(); };
+  $('#followBtn').onclick = () => { follow = !follow; renderInspector(); };
+  $('#locateBtn').onclick = () => { centerOn(selected.pos[0], selected.pos[1], Math.max(cam.z, 2)); };
+}
+function select(r, center){ selected = r; if (center){ centerOn(r.pos[0], r.pos[1], Math.max(cam.z, 2.2)); } renderInspector(); }
+
+function updateHeader(moving){
+  const ctxw = scene.context || {};
+  const days = ctxw.daily_weather || [];
+  const today = days.find(d => d.weekday === DAYS[day]) || ctxw.weather || {};
+  scene.context.weatherToday = today;
+  const t = today.temperature_f || {};
+  $('#wxIcon').textContent = WX_ICON[today.condition] || '🌤️';
+  $('#wxTemp').textContent = t.high != null ? `${t.high}°F / ${t.low}°` : '--';
+  $('#wxCond').textContent = `${String(today.condition||'').replace('_',' ')} · ${ctxw.season||''}`;
+  $('#dateLabel').textContent = `${DAYS[day].slice(0,3)} ${today.date ? new Date(today.date+'T12:00').toLocaleDateString(undefined,{month:'short',day:'numeric',year:'numeric'}) : ''} · ${fmt(minute)}`;
+  $('#weekLabel').textContent = `Engine week ${scene.engine.world_week || '—'}`;
+  $('#statCitizens').textContent = residents.length;
+  $('#statMoving').textContent = moving;
+  $('#statCommute').textContent = scene.mobility.avg_commute_minutes ? `${Math.round(scene.mobility.avg_commute_minutes)} min` : '—';
+  $('#statTransit').textContent = scene.mobility.transit_share_pct != null ? `${scene.mobility.transit_share_pct}%` : '—';
+  $('#clock').textContent = fmt(minute);
+  $('#scrub').value = Math.floor(minute);
+  document.querySelectorAll('#days button').forEach((b,i) => b.classList.toggle('on', i===day));
+  const badge = $('#modeBadge');
+  badge.textContent = mode === 'live' ? 'Engine clock' : 'Replay'; badge.classList.toggle('live', mode==='live');
+}
+
+function buildDays(){ const el = $('#days'); el.innerHTML = DAYS.map((d,i) => `<button class="btn" data-d="${i}">${d.slice(0,3)}</button>`).join(''); el.onclick = e => { const b = e.target.closest('button'); if (!b) return; day = +b.dataset.d; mode='replay'; }; }
+
+// ---------- interaction ----------
+let drag = null;
+view.addEventListener('pointerdown', e => { drag = {x:e.clientX, y:e.clientY, cx:cam.x, cy:cam.y, moved:false}; view.setPointerCapture(e.pointerId); });
+view.addEventListener('pointermove', e => {
+  if (drag){ const dx = e.clientX-drag.x, dy = e.clientY-drag.y; if (Math.abs(dx)+Math.abs(dy) > 4){ drag.moved = true; view.classList.add('dragging'); follow = false; } cam.x = drag.cx - dx/cam.z; cam.y = drag.cy - dy/cam.z; return; }
+  hover = pick(e.clientX, e.clientY);
+  view.style.cursor = hover ? 'pointer' : 'grab';
+});
+view.addEventListener('pointerup', e => { if (drag && !drag.moved){ const r = pick(e.clientX, e.clientY); if (r) select(r); } drag = null; view.classList.remove('dragging'); });
+view.addEventListener('wheel', e => {
+  e.preventDefault();
+  const f = Math.exp(-e.deltaY * 0.0015), z2 = Math.max(0.25, Math.min(4, cam.z * f));
+  const mx = e.clientX - view.clientWidth/2, my = e.clientY - view.clientHeight/2;
+  cam.x += mx/cam.z - mx/z2; cam.y += my/cam.z - my/z2; cam.z = z2;
+}, {passive:false});
+function pick(cx, cy){
+  let best = null, bd = 18;
+  for (const r of residents){ const [x,y] = screenOf(r.pos[0], r.pos[1]); const d = Math.hypot(cx-x, cy-(y-8)); if (d < bd){ bd = d; best = r; } }
+  return best;
+}
+document.querySelectorAll('[data-layer]').forEach(b => b.onclick = () => { const k = b.dataset.layer; layers[k] = !layers[k]; b.classList.toggle('on', layers[k]); });
+document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => { follow=false; const g = b.dataset.go; if (g==='fit') fitCity(); else { const z = zonesByName[g]; if (z) centerOn(z.x, z.y, 2.4); } });
+$('#play').onclick = () => { play = !play; $('#play').textContent = play ? '⏸' : '▶'; };
+$('#speed').onchange = e => speed = +e.target.value;
+$('#scrub').oninput = e => { minute = +e.target.value; mode='replay'; };
+$('#engineClock').onclick = () => {
+  const c = scene.engine.city_clock; if (!c) return;
+  day = Math.max(0, DAYS.indexOf(c.day)); minute = hm(c.time); mode = 'live'; play = false; $('#play').textContent='▶';
+};
+const search = $('#search'), results = $('#results');
+search.addEventListener('input', () => {
+  const q = search.value.trim().toLowerCase(); if (!q){ results.style.display='none'; return; }
+  const hits = residents.filter(r => r.name.toLowerCase().includes(q) || (r.home||'').toLowerCase().includes(q) || (r.organization||'').toLowerCase().includes(q)).slice(0,12);
+  results.innerHTML = hits.map(r => `<button data-n="${esc(r.name)}">${esc(r.name)}<br><small>${esc(r.home||'')} · ${esc(r.title||'')}</small></button>`).join('') || '<button disabled><small>No residents found</small></button>';
+  results.style.display='block';
+});
+results.addEventListener('click', e => { const b = e.target.closest('button[data-n]'); if (!b) return; const r = residents.find(x => x.name === b.dataset.n); results.style.display='none'; search.value=''; if (r) select(r, true); });
+window.addEventListener('resize', resize);
+
+// ---------- loop ----------
+let last = performance.now(), uiTick = 0;
+function frame(now){
+  const dt = Math.min(0.1, (now - last)/1000); last = now;
+  if (scene){
+    if (play && mode === 'replay'){ minute += dt * speed / 60; if (minute >= 1440){ minute -= 1440; day = (day+1)%7; } }
+    const moving = placeResidents();
+    if (follow && selected) centerOn(selected.pos[0], selected.pos[1]);
+    draw();
+    if ((uiTick++ % 10) === 0){ updateHeader(moving); drawMini(); if (selected) renderInspector(); }
+  }
+  requestAnimationFrame(frame);
+}
+
+// ---------- boot ----------
+async function load(first){
+  const r = await fetch('/api/city/scene', {cache:'no-store'});
+  const data = await r.json();
+  if (!data.ok) throw new Error(data.error || 'scene unavailable');
+  const keepSel = selected?.name;
+  scene = data;
+  zonesByName = Object.fromEntries(scene.zones.map(z => [z.name, z]));
+  lines = scene.transit_lines || [];
+  shoreline = (scene.map?.shoreline || []).slice().sort((a,b) => b[1]-a[1]);
+  rivers = scene.map?.river || []; parks = scene.map?.parks || [];
+  if (scene.map?.bounds) bounds = scene.map.bounds;
+  else { const xs = scene.zones.map(z=>z.x), ys = scene.zones.map(z=>z.y); bounds = [Math.min(...xs)-1.5, Math.min(...ys)-1.5, Math.max(...xs)+1.5, Math.max(...ys)+1.5]; }
+  prepResidents();
+  if (keepSel) selected = residents.find(x => x.name === keepSel) || null;
+  const [first1, ...rest] = scene.city.world_name.split(' ');
+  $('#brandName').innerHTML = `${esc(first1.toUpperCase())} <b>${esc(rest.join(' ').toUpperCase())}</b>`;
+  $('#brandTag').textContent = scene.city.tagline || 'People · Places · Choices';
+  document.title = `${scene.city.world_name} · City View`;
+  $('#miniTitle').textContent = `${scene.city.name} (isometric)`;
+  if (first){
+    buildStatic();
+    fitCity();
+    if (!residents.some(r => r.reported)) toast(`No resident schedules reported yet. Start the engine or seed the world, then refresh.`);
+  }
+}
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.remove('hide'); setTimeout(() => t.classList.add('hide'), 6000); }
+
+resize(); buildDays();
+load(true).then(() => requestAnimationFrame(frame)).catch(err => { toast(`Could not load the city scene: ${err.message}`); });
+setInterval(() => load(false).catch(()=>{}), 60000);
+})();
+</script>
+</body>
+</html>

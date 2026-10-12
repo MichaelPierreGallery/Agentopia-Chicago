@@ -12,7 +12,7 @@ from pathlib import Path
 from statistics import median
 from typing import Any
 
-ROOT = Path(os.environ.get('AGENTOPIA_HOME', str(Path.home() / 'AI' / 'Agentopia'))).expanduser().resolve()
+ROOT = Path(os.environ.get('AGENTOPIA_HOME', str(Path(__file__).resolve().parents[1]))).expanduser().resolve()
 WORLD = ROOT / 'data' / 'detroit_persistent'
 ECON = WORLD / 'human_economy'
 STATE_PATH = ECON / 'state.json'
@@ -255,7 +255,7 @@ def housing_stock() -> dict[str, Any]:
         rent = max(58, int(round(base_rent * nidx * jitter)))
         value = int(round(rent * 52 * rng.uniform(13.0, 17.5) / 1000.0) * 1000)
         condition = max(45, min(98, int(rng.gauss(78, 11))))
-        pid = f'DET-HOME-{i+1:04d}'
+        pid = f'{_city.get("human_economy.property_prefix", "DET")}-HOME-{i+1:04d}'
         units[pid] = {
             'property_id': pid, 'neighborhood': neighborhood, 'neighborhood_index': nidx,
             'type': kind, 'bedrooms': bedrooms, 'weekly_rent_base': rent,
@@ -277,7 +277,7 @@ def ensure_housing_capacity(housing: dict[str, Any], needed: int) -> None:
         kind, bedrooms, base_rent = UNIT_TYPES[(i * 5 + 3) % len(UNIT_TYPES)]
         rent = max(58, int(round(base_rent * nidx * rng.uniform(0.90, 1.12))))
         value = int(round(rent * 52 * rng.uniform(13.0, 17.5) / 1000.0) * 1000)
-        pid = f'DET-HOME-{i+1:04d}'
+        pid = f'{_city.get("human_economy.property_prefix", "DET")}-HOME-{i+1:04d}'
         units[pid] = {'property_id':pid,'neighborhood':neighborhood,'neighborhood_index':nidx,'type':kind,'bedrooms':bedrooms,'weekly_rent_base':rent,'market_value_base':value,'condition':max(45,min(98,int(rng.gauss(78,11)))),'occupied_by':None,'created_version':VERSION}
     housing['updated_at'] = utc_now()
 

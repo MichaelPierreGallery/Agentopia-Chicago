@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-APP = Path(os.environ.get("AGENTOPIA_HOME", str(Path.home() / "AI" / "Agentopia"))).expanduser()
+APP = Path(os.environ.get("AGENTOPIA_HOME", str(Path(__file__).resolve().parents[1]))).expanduser()
 WORLD = APP / "data" / "detroit_persistent"
 FIN = WORLD / "finance"
 
